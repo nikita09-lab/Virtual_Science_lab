@@ -1,0 +1,82 @@
+{
+  "subject": "Physics",
+  "description": "Interactive physics experiments using 3D simulations",
+  "experiments": [
+    {
+      "id": "velocity-acceleration",
+      "title": "Velocity and Acceleration",
+      "description": "Understanding motion concepts",
+      "modelUrl": "https://sketchfab.com/models/070490e0adaf4c9785a7c97bcda465db/embed",
+      "aim": "To study velocity and acceleration.",
+      "theory": "Velocity is the rate of change of displacement, while acceleration is the rate of change of velocity.",
+      "procedure": [
+        "Observe motion in the model.",
+        "Note change in velocity.",
+        "Understand acceleration visually."
+      ],
+      "observation": "Motion changes are clearly visible.",
+      "result": "Concepts of velocity and acceleration are understood.",
+      "precautions": [
+        "Observe motion carefully.",
+        "Understand difference between velocity and acceleration."
+      ]
+    },
+    {
+      "id": "magnetic-field-wires",
+      "title": "Magnetic Field Between Two Wires",
+      "description": "Interaction of magnetic fields",
+      "modelUrl": "https://sketchfab.com/models/a3c1edfdf088448ca67c6f0f47a5c370/embed",
+      "aim": "To study magnetic interaction between current-carrying wires.",
+      "theory": "Current-carrying conductors produce magnetic fields which interact with each other.",
+      "procedure": [
+        "Observe the two wires.",
+        "Note magnetic field interaction.",
+        "Understand attraction and repulsion."
+      ],
+      "observation": "Magnetic field interaction is visible.",
+      "result": "Interaction between magnetic fields is understood.",
+      "precautions": [
+        "Observe direction of current.",
+        "Understand field lines clearly."
+      ]
+    },
+    {
+      "id": "thumb-rule",
+      "title": "Right-Hand Thumb Rule",
+      "description": "Direction of magnetic field",
+      "modelUrl": "https://sketchfab.com/models/c22ca80d7f964e548305617615d063df/embed",
+      "aim": "To determine the direction of magnetic field using thumb rule.",
+      "theory": "The right-hand thumb rule helps determine the direction of magnetic field around a conductor.",
+      "procedure": [
+        "Observe hand orientation.",
+        "Relate thumb direction to current.",
+        "Note curl of fingers."
+      ],
+      "observation": "Direction of magnetic field is clearly shown.",
+      "result": "Thumb rule concept is understood.",
+      "precautions": [
+        "Use right hand only.",
+        "Observe direction carefully."
+      ]
+    },
+    {
+      "id": "magnetic-field-direction",
+      "title": "Direction of Magnetic Field Around a Conductor",
+      "description": "Magnetic field around straight conductor",
+      "modelUrl": "https://sketchfab.com/models/fc4dac92f4344db188c37bc65a125288/embed",
+      "aim": "To determine the direction of magnetic field around a straight conductor.",
+      "theory": "A current-carrying straight conductor produces circular magnetic field lines around it.",
+      "procedure": [
+        "Observe conductor model.",
+        "Identify magnetic field lines.",
+        "Understand circular field pattern."
+      ],
+      "observation": "Circular magnetic field lines are visible.",
+      "result": "Magnetic field direction is understood.",
+      "precautions": [
+        "Observe current direction.",
+        "Follow field lines carefully."
+      ]
+    }
+  ]
+}

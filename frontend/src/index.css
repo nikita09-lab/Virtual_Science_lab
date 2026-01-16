@@ -1,0 +1,87 @@
+/* ---------- THEME COLORS ---------- */
+body[data-theme="light"] {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+body[data-theme="dark"] {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+
+/* ---------- COMMON ---------- */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ---------- CARD ANIMATION ---------- */
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* ---------- PAGE FADE ---------- */
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body[data-theme="light"] {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+body[data-theme="dark"] {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* ---------- Experiment Cards ---------- */
+.experiment-card {
+  padding: 20px;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+/* LIGHT MODE */
+body[data-theme="light"] .experiment-card {
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+body[data-theme="light"] .experiment-card p {
+  color: #4b5563;
+}
+
+/* DARK MODE */
+body[data-theme="dark"] .experiment-card {
+  background-color: #020617; /* dark slate */
+  color: #f8fafc;
+  border: 1px solid #334155;
+}
+
+body[data-theme="dark"] .experiment-card p {
+  color: #cbd5f5;
+}
+
+/* Hover effect */
+.experiment-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}

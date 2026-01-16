@@ -1,0 +1,82 @@
+{
+  "subject": "Biology",
+  "description": "Interactive biology experiments using 3D models",
+  "experiments": [
+    {
+      "id": "human-body",
+      "title": "Human Body Anatomy",
+      "description": "Explore the complete human body systems in 3D",
+      "modelUrl": "https://sketchfab.com/models/9b0b079953b840bc9a13f524b60041e4/embed",
+      "aim": "To study the structure of the human body.",
+      "theory": "The human body is made up of multiple systems such as skeletal, muscular, circulatory, and nervous systems that work together to sustain life.",
+      "procedure": [
+        "Load the 3D human body model.",
+        "Rotate and zoom to observe different body systems.",
+        "Identify major organs and structures."
+      ],
+      "observation": "Different organ systems and body structures are clearly visible.",
+      "result": "The overall structure and organization of the human body is understood.",
+      "precautions": [
+        "Observe each system carefully.",
+        "Do not rush through the model exploration."
+      ]
+    },
+    {
+      "id": "mitochondria",
+      "title": "Mitochondria",
+      "description": "Study the powerhouse of the cell",
+      "modelUrl": "https://sketchfab.com/models/acc7d71759a1441e8409ebb31e3c3c0d/embed",
+      "aim": "To study the structure of mitochondria.",
+      "theory": "Mitochondria are membrane-bound organelles responsible for producing energy in the form of ATP.",
+      "procedure": [
+        "Observe the outer and inner membranes.",
+        "Identify cristae and matrix.",
+        "Understand ATP synthesis regions."
+      ],
+      "observation": "Cristae and internal structures are clearly visible.",
+      "result": "The structure and function of mitochondria is understood.",
+      "precautions": [
+        "Zoom in for detailed observation.",
+        "Rotate the model for full understanding."
+      ]
+    },
+    {
+      "id": "eye",
+      "title": "Eye Anatomy",
+      "description": "Understand the structure and function of the human eye",
+      "modelUrl": "https://sketchfab.com/models/6529d87d70604e37b6a15ec70c173b96/embed",
+      "aim": "To study the structure of the human eye.",
+      "theory": "The human eye works like a camera and helps us to see by focusing light on the retina.",
+      "procedure": [
+        "Observe the external structure of the eye.",
+        "Identify cornea, lens, retina, and optic nerve.",
+        "Understand how images are formed."
+      ],
+      "observation": "All major parts of the eye are clearly visible.",
+      "result": "The structure and working of the human eye is understood.",
+      "precautions": [
+        "Observe each part slowly.",
+        "Focus on internal structures."
+      ]
+    },
+    {
+      "id": "kidney",
+      "title": "Kidney Anatomy",
+      "description": "Learn how kidneys filter blood",
+      "modelUrl": "https://sketchfab.com/models/0215aaf9e9a243cdafca249a979680b0/embed",
+      "aim": "To study the structure of the human kidney.",
+      "theory": "Kidneys filter waste products from blood and help maintain water and salt balance.",
+      "procedure": [
+        "Observe cortex and medulla.",
+        "Identify nephrons.",
+        "Understand urine formation."
+      ],
+      "observation": "Internal kidney structures are clearly visible.",
+      "result": "The structure and function of kidneys is understood.",
+      "precautions": [
+        "Zoom carefully to see nephrons.",
+        "Rotate the model for clarity."
+      ]
+    }
+  ]
+}

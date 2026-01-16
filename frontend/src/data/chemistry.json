@@ -1,0 +1,63 @@
+{
+  "subject": "Chemistry",
+  "description": "Interactive chemistry experiments using 3D models",
+  "experiments": [
+    {
+      "id": "chemistry-equipment",
+      "title": "Chemistry Equipment – Full Set",
+      "description": "Introduction to common laboratory apparatus",
+      "modelUrl": "https://sketchfab.com/models/5fa065f15dbd41618169a647c0514e4a/embed",
+      "aim": "To study common laboratory equipment used in chemistry.",
+      "theory": "Chemistry experiments require various apparatus such as beakers, flasks, test tubes, and burners for safe and accurate experimentation.",
+      "procedure": [
+        "Observe the 3D model of laboratory equipment.",
+        "Identify each apparatus.",
+        "Understand the use of each equipment."
+      ],
+      "observation": "Different laboratory apparatus are clearly visible.",
+      "result": "Students can identify and understand the use of chemistry lab equipment.",
+      "precautions": [
+        "Handle virtual equipment carefully.",
+        "Understand safety symbols."
+      ]
+    },
+    {
+      "id": "volcano-experiment",
+      "title": "Volcano Chemical Reaction",
+      "description": "Simulation of an exothermic reaction",
+      "modelUrl": "https://sketchfab.com/models/9624307a2cf2480b96df22ac34f46e04/embed",
+      "aim": "To demonstrate a chemical reaction using a volcano model.",
+      "theory": "Some chemical reactions release energy in the form of heat and gas, known as exothermic reactions.",
+      "procedure": [
+        "Observe the volcano model.",
+        "Understand how gas formation causes eruption.",
+        "Relate it to baking soda and vinegar reaction."
+      ],
+      "observation": "Gas formation causes eruption-like behavior.",
+      "result": "Exothermic reactions are understood through visualization.",
+      "precautions": [
+        "Observe changes carefully.",
+        "Understand reaction concept clearly."
+      ]
+    },
+    {
+      "id": "condenser",
+      "title": "Condenser",
+      "description": "Apparatus used in distillation",
+      "modelUrl": "https://sketchfab.com/models/056bf718913541ab8d43d5bdf49a1cd1/embed",
+      "aim": "To study the working of a condenser.",
+      "theory": "A condenser cools vapour and converts it into liquid during distillation.",
+      "procedure": [
+        "Observe the structure of condenser.",
+        "Understand vapour flow.",
+        "Learn condensation process."
+      ],
+      "observation": "Cooling tubes and flow path are visible.",
+      "result": "The working of a condenser is understood.",
+      "precautions": [
+        "Observe inlet and outlet carefully.",
+        "Understand temperature role."
+      ]
+    }
+  ]
+}
