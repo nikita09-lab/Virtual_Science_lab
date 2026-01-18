@@ -1,24 +1,31 @@
-import { Routes, Route } from "react-router-dom";
-import BiologyLayout from "../components/BiologyLayout";
-import BiologyHome from "../components/BiologyHome";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import HumanBody from "../experiments/biology/HumanBody";
-import Mitochondria from "../experiments/biology/Mitochondria";
-import Eye from "../experiments/biology/Eye";
-import Kidney from "../experiments/biology/Kidney";
+const BiologyHome = () => {
+  const [experiments, setExperiments] = useState([]);
 
-const Biology = () => {
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/biology/experiments")
+      .then((res) => res.json())
+      .then((data) => setExperiments(data.experiments))
+      .catch(() => console.error("Backend not connected"));
+  }, []);
+
   return (
-    <Routes>
-      <Route element={<BiologyLayout />}>
-        <Route index element={<BiologyHome />} />
-        <Route path="human-body" element={<HumanBody />} />
-        <Route path="mitochondria" element={<Mitochondria />} />
-        <Route path="eye" element={<Eye />} />
-        <Route path="kidney" element={<Kidney />} />
-      </Route>
-    </Routes>
+    <div style={{ padding: "24px" }}>
+      <h2>Biology Experiments</h2>
+
+      {experiments.map((exp) => (
+        <div key={exp.id} style={{ marginTop: "16px" }}>
+          <h4>{exp.title}</h4>
+          <p>{exp.description}</p>
+
+          {/* 👇 Backend data → Frontend route */}
+          <Link to={exp.slug}>Open Experiment</Link>
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default Biology;
+export default BiologyHome;

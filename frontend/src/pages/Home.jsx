@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react";
 import SubjectCard from "../components/SubjectCard";
 
 const Home = () => {
+  const [backendStatus, setBackendStatus] = useState("");
+
+  // 🔹 Backend test (page load pe)
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/")
+      .then((res) => res.json())
+      .then((data) => setBackendStatus(data.status))
+      .catch(() => setBackendStatus("Backend not connected ❌"));
+  }, []);
+
   return (
     <div style={{ padding: "24px" }}>
       <h1>Virtual Science Lab</h1>
       <p>Explore interactive Biology, Chemistry, and Physics experiments</p>
+
+      {/* 🔹 Backend status indicator */}
+      <p style={{ color: "green", marginTop: "8px" }}>
+        {backendStatus}
+      </p>
 
       <div
         style={{
