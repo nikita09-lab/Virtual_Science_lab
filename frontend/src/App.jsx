@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Biology from "./pages/Biology";
 import Chemistry from "./pages/Chemistry";
 import Physics from "./pages/Physics";
+import Ask from "./components/Ask";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path="/physics/*" element={<Physics />} />
       </Routes>
     </BrowserRouter>
+    <Ask />;
   );
 }
-
+export default App;
 export default App;
