@@ -1,6 +1,16 @@
+import { useEffect, useState } from "react";
 import ExperimentCard from "./ExperimentCard";
 
 const PhysicsHome = () => {
+  const [experiments, setExperiments] = useState([]);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/physics/experiments")
+      .then((res) => res.json())
+      .then((data) => setExperiments(data.experiments))
+      .catch(() => console.error("Backend not connected"));
+  }, []);
+
   return (
     <div>
       <h1>Physics Virtual Lab</h1>
@@ -14,29 +24,14 @@ const PhysicsHome = () => {
           marginTop: "20px",
         }}
       >
-        <ExperimentCard
-          title="Velocity & Acceleration"
-          description="Understand motion concepts"
-          link="/physics/velocity-acceleration"
-        />
-
-        <ExperimentCard
-          title="Magnetic Field (Two Wires)"
-          description="Interaction of magnetic fields"
-          link="/physics/magnetic-field-wires"
-        />
-
-        <ExperimentCard
-          title="Right-Hand Thumb Rule"
-          description="Direction of magnetic field"
-          link="/physics/thumb-rule"
-        />
-
-        <ExperimentCard
-          title="Magnetic Field Direction"
-          description="Field around straight conductor"
-          link="/physics/magnetic-field-direction"
-        />
+        {experiments.map((exp) => (
+          <ExperimentCard
+            key={exp.id}
+            title={exp.title}
+            description={exp.description}
+            link={`/physics/${exp.slug}`}
+          />
+        ))}
       </div>
     </div>
   );

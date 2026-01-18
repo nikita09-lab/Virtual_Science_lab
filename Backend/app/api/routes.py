@@ -8,6 +8,8 @@ router = APIRouter(prefix="/api")
 def ask_question(data: QueryRequest):
     answer = process_query(data.question)
     return {"answer": answer}
+# ---------------- BIOLOGY ----------------
+
 @router.get("/biology/experiments")
 def get_biology_experiments():
     return {
@@ -29,3 +31,62 @@ def get_biology_experiments():
             }
         ]
     }
+# ---------------- CHEMISTRY ----------------
+@router.get("/chemistry/experiments")
+def get_chemistry_experiments():
+    return {
+        "experiments": [
+            {
+                "id": 1,
+                "title": "Chemistry Equipment",
+                "description": "Learn about laboratory apparatus",
+                "slug": "chemistry-equipment"
+            },
+            {
+                "id": 2,
+                "title": "Volcano Experiment",
+                "description": "Visualize a chemical reaction",
+                "slug": "volcano-experiment"
+            },
+            {
+                "id": 3,
+                "title": "Condenser",
+                "description": "Understand distillation apparatus",
+                "slug": "condenser"
+            }
+        ]
+    }
+
+
+# ---------------- PHYSICS ----------------
+@router.get("/physics/experiments")
+def get_physics_experiments():
+    return {
+        "experiments": [
+            {
+                "id": 1,
+                "title": "Velocity & Acceleration",
+                "description": "Understand motion concepts",
+                "slug": "velocity-acceleration"
+            },
+            {
+                "id": 2,
+                "title": "Magnetic Field (Two Wires)",
+                "description": "Interaction of magnetic fields",
+                "slug": "magnetic-field-wires"
+            },
+            {
+                "id": 3,
+                "title": "Right-Hand Thumb Rule",
+                "description": "Direction of magnetic field",
+                "slug": "thumb-rule"
+            },
+            {
+                "id": 4,
+                "title": "Magnetic Field Direction",
+                "description": "Field around straight conductor",
+                "slug": "magnetic-field-direction"
+            }
+        ]
+    }
+

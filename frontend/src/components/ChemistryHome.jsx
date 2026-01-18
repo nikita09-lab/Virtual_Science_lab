@@ -1,6 +1,16 @@
+import { useEffect, useState } from "react";
 import ExperimentCard from "./ExperimentCard";
 
 const ChemistryHome = () => {
+  const [experiments, setExperiments] = useState([]);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/chemistry/experiments")
+      .then((res) => res.json())
+      .then((data) => setExperiments(data.experiments))
+      .catch(() => console.error("Backend not connected"));
+  }, []);
+
   return (
     <div>
       <h1>Chemistry Virtual Lab</h1>
@@ -14,23 +24,14 @@ const ChemistryHome = () => {
           marginTop: "20px",
         }}
       >
-        <ExperimentCard
-          title="Chemistry Equipment"
-          description="Learn about laboratory apparatus"
-          link="/chemistry/chemistry-equipment"
-        />
-
-        <ExperimentCard
-          title="Volcano Experiment"
-          description="Visualize a chemical reaction"
-          link="/chemistry/volcano-experiment"
-        />
-
-        <ExperimentCard
-          title="Condenser"
-          description="Understand distillation apparatus"
-          link="/chemistry/condenser"
-        />
+        {experiments.map((exp) => (
+          <ExperimentCard
+            key={exp.id}
+            title={exp.title}
+            description={exp.description}
+            link={`/chemistry/${exp.slug}`}
+          />
+        ))}
       </div>
     </div>
   );
