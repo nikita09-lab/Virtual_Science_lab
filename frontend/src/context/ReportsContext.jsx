@@ -78,7 +78,6 @@ export const ReportsProvider = ({ children }) => {
       setReports(safeReports);
       writeLocalReports(safeReports);
 
-      writeLocalReports(data);
       setUsingLocalFallback(false);
       return data;
     }catch (err) {
