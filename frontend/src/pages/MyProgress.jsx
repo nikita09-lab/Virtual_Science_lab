@@ -37,12 +37,12 @@ const MyProgress = () => {
           <div key={subject}>
             <div className="flex justify-between mb-1">
               <span className="font-medium">{subject}</span>
-              <span>{stats[subject] || 0}%</span>
+              <span>{stats[subject.toLowerCase()] || 0}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div 
                 className="bg-blue-600 h-2.5 rounded-full" 
-                style={{ width: `${stats[subject] || 0}%` }}
+                style={{ width: `${stats[subject.toLowerCase()] || 0}%` }}
               ></div>
             </div>
           </div>
