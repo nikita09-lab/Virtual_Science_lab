@@ -11,7 +11,9 @@ import Chemistry from "./pages/Chemistry";
 import Physics from "./pages/Physics";
 import FAQ from "./pages/FAQ";
 import Policy from "./pages/Policy";
+import Terms from "./pages/Terms";
 
+import Feedback from "./pages/Feedback";
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +40,9 @@ function App() {
             {/* Policy */}
             <Route path="/policy" element={<Policy />} />
 
+            <Route path="/terms" element={<Terms />} />
+
+            <Route path="/feedback" element={<Feedback />} />
             {/* 404 Not Found */}
             <Route
               path="*"
@@ -65,6 +70,7 @@ function App() {
                     </a>
                   </div>
                 </div>
+                
               }
             />
           </Routes>
