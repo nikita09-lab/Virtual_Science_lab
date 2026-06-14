@@ -1,13 +1,16 @@
 """
-Chatbot API Routes – Virtual Science Lab
+Chatbot API Routes - Virtual Science Lab
 POST /api/chatbot/ask
 """
 
+import logging
 import os
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional
 from app.services.chatbot_service import generate_chatbot_response
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/chatbot", tags=["Chatbot"])
 
@@ -17,16 +20,24 @@ router = APIRouter(prefix="/api/chatbot", tags=["Chatbot"])
 # ---------------------------------------------------------------------------
 
 class ChatRequest(BaseModel):
-    experimentTitle: str = Field(..., description="Title of the current experiment")
+    experimentTitle: str = Field(
+        ..., max_length=200, description="Title of the current experiment"
+    )
     experimentTheory: str = Field(
-        default="", description="Theory text of the experiment"
+        default="", max_length=5000, description="Theory text of the experiment"
     )
     experimentProcedure: str = Field(
-        default="", description="Procedure steps as a single string or list joined"
+        default="",
+        max_length=5000,
+        description="Procedure steps as a single string or list joined",
     )
-    userQuestion: str = Field(..., description="Student's question")
+    userQuestion: str = Field(
+        ..., max_length=2000, description="Student's question"
+    )
     subject: Optional[str] = Field(
-        default=None, description="Subject context: chemistry | physics | biology"
+        default=None,
+        max_length=50,
+        description="Subject context: chemistry | physics | biology",
     )
 
 
@@ -65,7 +76,8 @@ async def ask_chatbot(data: ChatRequest):
         return {"answer": answer, "source": source}
 
     except Exception as exc:
+        logger.exception("Unhandled error in /api/chatbot/ask: %s", exc)
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to generate response: {str(exc)}",
+            detail="An internal error occurred. Please try again.",
         )

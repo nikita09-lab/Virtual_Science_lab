@@ -1,14 +1,8 @@
 import physicsData from "../../data/physics.json";
 import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
-import ExperimentChatbot from "../../components/ExperimentChatbot";
-
-const MagneticFieldWires = () => {
-  const experiment = physicsData.experiments.find((exp) => exp.id === "magnetic-field-wires");
-import Quiz from "../../components/Quiz";
-import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
-
-import SimulationViewer from "../../components/SimulationViewer";
+import LabAssistantPanel from "../../components/LabAssistantPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const MagneticFieldWires = () => {
 
@@ -58,9 +52,10 @@ const MagneticFieldWires = () => {
         precautions={experiment.precautions}
       />
 
-      <ExperimentChatbot experiment={experiment} subject="physics" />
+      <LabAssistantPanel experiment={experiment} subject="physics" />
       <Quiz experimentId="magnetic-field-wires" subject="physics" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="magnetic-field-wires" />
         <ExperimentNotesPanel experimentId="magnetic-field-wires" />
       </div>
     </div>
@@ -68,3 +63,4 @@ const MagneticFieldWires = () => {
 };
 
 export default MagneticFieldWires;
+

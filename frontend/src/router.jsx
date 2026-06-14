@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-
 import Navbar from "./components/Navbar";
 import BadgeNotification from "./components/BadgeNotification";
 import SyncManager from "./components/SyncManager";
+import ParticipantPresence from "./components/collaboration/ParticipantPresence";
+import ScientificCalculatorWidget from "./components/ScientificCalculatorWidget";
 
 /* Main Pages */
 import Home from "./pages/Home";
@@ -10,27 +11,34 @@ import Biology from "./pages/Biology";
 import Chemistry from "./pages/Chemistry";
 import Physics from "./pages/Physics";
 import Mathematics from "./pages/Mathematics";
-import ComputerScience from "./pages/ComputerScience";
-import EnvironmentalScience from "./pages/EnvironmentalScience";
-import Astronomy from "./pages/Astronomy";
-import Robotics from "./pages/Robotics";
-import Electronics from "./pages/Electronics";
-import ArtificialIntelligence from "./pages/ArtificialIntelligence";
-import Geography from "./pages/Geography";
-import Psychology from "./pages/Psychology";
+
 
 import Profile from "./pages/Profile";
 import ProgressDashboard from "./pages/ProgressDashboard";
+import KnowledgeGraph from "./pages/KnowledgeGraph";
 import ReportHistory from "./pages/ReportHistory";
 import MyProgress from "./pages/MyProgress";
+import LeaderboardDashboard from "./pages/LeaderboardDashboard";
+import TeamSessionLobby from "./pages/TeamSessionLobby";
+import NotebookDashboard from "./pages/NotebookDashboard";
+import NotebookEditor from "./pages/NotebookEditor";
+import NotebookEditorRich from "./components/NotebookEditorRich";
+import NotebookReport from "./pages/NotebookReport";
+import CareerExplorer from "./pages/CareerExplorer";
+import Login from "./pages/Login";
+import FAQ from "./pages/FAQ";
+import Policy from "./pages/Policy";
+import Sandbox from "./pages/Sandbox";
+import ClassroomFeed from "./pages/ClassroomFeed";
 
 const AppRouter = () => {
   return (
     <>
       <Navbar />
+      <ParticipantPresence />
       <BadgeNotification />
       <SyncManager />
-
+      <ScientificCalculatorWidget />
       <Routes>
         {/* Home */}
         <Route path="/" element={<Home />} />
@@ -40,33 +48,25 @@ const AppRouter = () => {
         <Route path="/chemistry/*" element={<Chemistry />} />
         <Route path="/physics/*" element={<Physics />} />
         <Route path="/mathematics/*" element={<Mathematics />} />
-        <Route
-          path="/computer-science/*"
-          element={<ComputerScience />}
-        />
-        <Route
-          path="/environmental-science/*"
-          element={<EnvironmentalScience />}
-        />
-
-        {/* Advanced Subjects */}
-        <Route path="/astronomy/*" element={<Astronomy />} />
-        <Route path="/robotics/*" element={<Robotics />} />
-        <Route path="/electronics/*" element={<Electronics />} />
-        <Route
-          path="/artificial-intelligence/*"
-          element={<ArtificialIntelligence />}
-        />
-
-        {/* Social & Earth Sciences */}
-        <Route path="/geography/*" element={<Geography />} />
-        <Route path="/psychology/*" element={<Psychology />} />
 
         {/* User Pages */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/progress" element={<ProgressDashboard />} />
+        {/* <Route path="/explore" element={<KnowledgeGraph />} /> */}
         <Route path="/reports" element={<ReportHistory />} />
         <Route path="/my-progress" element={<MyProgress />} />
+        <Route path="/notebook" element={<NotebookDashboard />} />
+        <Route path="/notebook/:experimentId" element={<NotebookEditor />} />
+        <Route path="/notebook/:experimentId/rich" element={<NotebookEditorRich />} />
+        <Route path="/notebook/:experimentId/report" element={<NotebookReport />} />
+        <Route path="/collaborate" element={<TeamSessionLobby />} />
+        <Route path="/leaderboard" element={<LeaderboardDashboard />} />
+        <Route path="/careers" element={<CareerExplorer />} />
+         <Route path="/login" element={<Login />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/policy" element={<Policy />} />
+        <Route path="/sandbox" element={<Sandbox />} />
+        <Route path="/classroom-feed" element={<ClassroomFeed />} />
       </Routes>
     </>
   );

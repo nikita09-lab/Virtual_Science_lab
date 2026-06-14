@@ -3,6 +3,7 @@ import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
 import Quiz from "../../components/Quiz";
 import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const SolarSystem = () => {
 
@@ -65,6 +66,7 @@ const SolarSystem = () => {
       <Quiz experimentId="solar-system" subject="physics" />
 
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="solar-system" />
         <ExperimentNotesPanel experimentId="solar-system" />
       </div>
 
@@ -73,3 +75,4 @@ const SolarSystem = () => {
 };
 
 export default SolarSystem;
+

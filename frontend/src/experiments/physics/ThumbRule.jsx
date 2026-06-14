@@ -1,14 +1,8 @@
 import physicsData from "../../data/physics.json";
 import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
-import ExperimentChatbot from "../../components/ExperimentChatbot";
-
-const ThumbRule = () => {
-  const experiment = physicsData.experiments.find((exp) => exp.id === "thumb-rule");
-import Quiz from "../../components/Quiz";
-import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
-
-import SimulationViewer from "../../components/SimulationViewer";
+import LabAssistantPanel from "../../components/LabAssistantPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const ThumbRule = () => {
 
@@ -58,9 +52,10 @@ const ThumbRule = () => {
         precautions={experiment.precautions}
       />
 
-      <ExperimentChatbot experiment={experiment} subject="physics" />
+      <LabAssistantPanel experiment={experiment} subject="physics" />
       <Quiz experimentId="thumb-rule" subject="physics" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="thumb-rule" />
         <ExperimentNotesPanel experimentId="thumb-rule" />
       </div>
     </div>
@@ -68,3 +63,4 @@ const ThumbRule = () => {
 };
 
 export default ThumbRule;
+

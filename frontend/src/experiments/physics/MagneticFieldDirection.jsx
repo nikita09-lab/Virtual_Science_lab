@@ -1,14 +1,8 @@
 import physicsData from "../../data/physics.json";
 import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
-import ExperimentChatbot from "../../components/ExperimentChatbot";
-
-const MagneticFieldDirection = () => {
-  const experiment = physicsData.experiments.find((exp) => exp.id === "magnetic-field-direction");
-import Quiz from "../../components/Quiz";
-import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
-
-import SimulationViewer from "../../components/SimulationViewer";
+import LabAssistantPanel from "../../components/LabAssistantPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const MagneticFieldDirection = () => {
 
@@ -58,9 +52,10 @@ const MagneticFieldDirection = () => {
         precautions={experiment.precautions}
       />
 
-      <ExperimentChatbot experiment={experiment} subject="physics" />
+      <LabAssistantPanel experiment={experiment} subject="physics" />
       <Quiz experimentId="magnetic-field-direction" subject="physics" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="magnetic-field-direction" />
         <ExperimentNotesPanel experimentId="magnetic-field-direction" />
       </div>
     </div>
@@ -68,3 +63,4 @@ const MagneticFieldDirection = () => {
 };
 
 export default MagneticFieldDirection;
+

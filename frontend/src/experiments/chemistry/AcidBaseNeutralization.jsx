@@ -1,5 +1,6 @@
 import React from "react";
 import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 import Quiz from "../../components/Quiz";
 
 const AcidBaseNeutralization = () => {
@@ -125,6 +126,7 @@ const AcidBaseNeutralization = () => {
       </div>
 
       <div className="mt-8">
+        <DataVisualizerPanel experimentId="acid-base-neutralization" />
         <ExperimentNotesPanel experimentId="acid-base-neutralization" />
       </div>
 
@@ -134,3 +136,4 @@ const AcidBaseNeutralization = () => {
 };
 
 export default AcidBaseNeutralization;
+

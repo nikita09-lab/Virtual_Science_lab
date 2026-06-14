@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import VirtualLabReportPreview from "../components/VirtualLabReportPreview";
 import { useReports } from "../context/ReportsContext";
+import { useReviews } from "../context/ReviewsContext";
 import { EXPERIMENT_CATALOG, SUBJECTS } from "../data/experiments";
 
 const formatDate = (value) => {
@@ -20,7 +21,9 @@ const formatSubject = (subject) => subject.charAt(0).toUpperCase() + subject.sli
 
 const ReportHistory = () => {
   const { reports, loading, usingLocalFallback, generateReport, exportMarkdown } = useReports();
+  const { publishReport } = useReviews();
   const [selectedReport, setSelectedReport] = useState(null);
+  const [publishStatus, setPublishStatus] = useState({});
   const [generatingId, setGeneratingId] = useState(null);
   const [subjectFilter, setSubjectFilter] = useState("all");
 
@@ -46,6 +49,22 @@ const ReportHistory = () => {
     const report = await generateReport(experimentId);
     setGeneratingId(null);
     setSelectedReport(report);
+  };
+
+  const handlePublish = async (report) => {
+    try {
+      setPublishStatus(prev => ({ ...prev, [report.id]: "publishing" }));
+      await publishReport(report.user_id, report.id);
+      setPublishStatus(prev => ({ ...prev, [report.id]: "published" }));
+      setTimeout(() => {
+        setPublishStatus(prev => ({ ...prev, [report.id]: null }));
+      }, 3000);
+    } catch {
+      setPublishStatus(prev => ({ ...prev, [report.id]: "error" }));
+      setTimeout(() => {
+        setPublishStatus(prev => ({ ...prev, [report.id]: null }));
+      }, 3000);
+    }
   };
 
   if (loading) {
@@ -95,7 +114,9 @@ const ReportHistory = () => {
                 className="flex flex-col gap-3 rounded-lg border border-slate-200 p-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
-                  <strong className="block text-slate-900 dark:text-slate-100">{experiment.title}</strong>
+                  <strong className="block text-slate-900 dark:text-slate-100">
+                    {experiment.title}
+                  </strong>
                   <span className="text-sm font-semibold text-slate-500">
                     {formatSubject(experiment.subject)} | {history.length} previous reports
                   </span>
@@ -137,21 +158,34 @@ const ReportHistory = () => {
 
         <div className="tracker-history">
           {filteredReports.length === 0 ? (
-            <p className="tracker-empty">No reports yet. Generate one from a completed experiment.</p>
+            <div className="tracker-empty">
+              <h3>No reports available</h3>
+              <p>
+                {usingLocalFallback
+                  ? "You are offline. Showing saved reports from local storage."
+                  : "Generate a new report from a completed experiment to get started."}
+              </p>
+            </div>
           ) : (
             filteredReports.map((report) => {
-              const experiment = EXPERIMENT_CATALOG.find((item) => item.id === report.experiment_id);
+              const experiment = EXPERIMENT_CATALOG.find(
+                (item) => item.id === report.experiment_id
+              );
               return (
                 <div className="tracker-history-item" key={report.id}>
                   <div>
                     <strong>{report.title}</strong>
                     <span>
-                      {formatSubject(report.subject)} - {formatDate(report.updated_at)} - {report.status}
+                      {formatSubject(report.subject)} - {formatDate(report.updated_at)} -{" "}
+                      {report.status}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {experiment && (
-                      <Link to={experiment.link} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-bold text-slate-700 no-underline hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                      <Link
+                        to={experiment.link}
+                        className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-bold text-slate-700 no-underline hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                      >
                         Experiment
                       </Link>
                     )}
@@ -168,6 +202,20 @@ const ReportHistory = () => {
                       className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white hover:bg-blue-500"
                     >
                       MD
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handlePublish(report)}
+                      disabled={publishStatus[report.id] === "publishing" || publishStatus[report.id] === "published"}
+                      className={`rounded-lg px-3 py-2 text-sm font-bold text-white transition ${
+                        publishStatus[report.id] === "published" ? "bg-green-500" :
+                        publishStatus[report.id] === "error" ? "bg-red-500" :
+                        "bg-indigo-500 hover:bg-indigo-400 disabled:opacity-70"
+                      }`}
+                    >
+                      {publishStatus[report.id] === "published" ? "Published!" : 
+                       publishStatus[report.id] === "publishing" ? "Publishing..." :
+                       publishStatus[report.id] === "error" ? "Failed" : "Publish"}
                     </button>
                   </div>
                 </div>

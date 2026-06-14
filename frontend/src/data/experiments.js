@@ -6,6 +6,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "biology",
     link: "/biology/human-body",
     difficulty: "Beginner",
+    concepts: ["Anatomy", "Organ Systems"],
+    prerequisites: [],
+    nextTopics: ["eye", "kidney", "mitochondria"]
   },
   {
     id: "mitochondria",
@@ -14,6 +17,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "biology",
     link: "/biology/mitochondria",
     difficulty: "Intermediate",
+    concepts: ["Cellular Biology", "Energy Production"],
+    prerequisites: ["human-body"],
+    nextTopics: []
   },
   {
     id: "eye",
@@ -22,6 +28,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "biology",
     link: "/biology/eye",
     difficulty: "Intermediate",
+    concepts: ["Sensory Organs", "Optics"],
+    prerequisites: ["human-body"],
+    nextTopics: ["kidney"]
   },
   {
     id: "kidney",
@@ -30,6 +39,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "biology",
     link: "/biology/kidney",
     difficulty: "Advanced",
+    concepts: ["Excretory System", "Filtration"],
+    prerequisites: ["human-body", "eye"],
+    nextTopics: []
   },
   {
     id: "chemistry-equipment",
@@ -38,6 +50,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "chemistry",
     link: "/chemistry/chemistry-equipment",
     difficulty: "Beginner",
+    concepts: ["Lab Safety", "Apparatus"],
+    prerequisites: [],
+    nextTopics: ["volcano-experiment", "condenser"]
   },
   {
     id: "volcano-experiment",
@@ -46,6 +61,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "chemistry",
     link: "/chemistry/volcano-experiment",
     difficulty: "Beginner",
+    concepts: ["Chemical Reactions", "Gas Production"],
+    prerequisites: ["chemistry-equipment"],
+    nextTopics: ["acid-base-neutralization"]
   },
   {
     id: "condenser",
@@ -54,6 +72,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "chemistry",
     link: "/chemistry/condenser",
     difficulty: "Intermediate",
+    concepts: ["Separation Techniques", "Distillation"],
+    prerequisites: ["chemistry-equipment"],
+    nextTopics: []
   },
   {
     id: "acid-base-neutralization",
@@ -62,6 +83,20 @@ export const EXPERIMENT_CATALOG = [
     subject: "chemistry",
     link: "/chemistry/acid-base-neutralization",
     difficulty: "Advanced",
+    concepts: ["Acids", "Bases", "Titration"],
+    prerequisites: ["volcano-experiment"],
+    nextTopics: ["titration-experiment"]
+  },
+  {
+    id: "titration-experiment",
+    title: "Acid-Base Titration",
+    description: "Simulation of an acid-base titration process",
+    subject: "chemistry",
+    link: "/chemistry/titration-experiment",
+    difficulty: "Advanced",
+    concepts: ["Acids", "Bases", "Titration"],
+    prerequisites: ["acid-base-neutralization"],
+    nextTopics: []
   },
   {
     id: "velocity-acceleration",
@@ -70,6 +105,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "physics",
     link: "/physics/velocity-acceleration",
     difficulty: "Beginner",
+    concepts: ["Kinematics", "Motion Vectors"],
+    prerequisites: [],
+    nextTopics: ["thumb-rule"]
   },
   {
     id: "magnetic-field-wires",
@@ -78,6 +116,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "physics",
     link: "/physics/magnetic-field-wires",
     difficulty: "Intermediate",
+    concepts: ["Electromagnetism", "Magnetic Forces"],
+    prerequisites: ["thumb-rule"],
+    nextTopics: ["magnetic-field-direction"]
   },
   {
     id: "thumb-rule",
@@ -86,6 +127,9 @@ export const EXPERIMENT_CATALOG = [
     subject: "physics",
     link: "/physics/thumb-rule",
     difficulty: "Beginner",
+    concepts: ["Electromagnetism", "Vector Rules"],
+    prerequisites: ["velocity-acceleration"],
+    nextTopics: ["magnetic-field-wires"]
   },
   {
     id: "magnetic-field-direction",
@@ -94,7 +138,34 @@ export const EXPERIMENT_CATALOG = [
     subject: "physics",
     link: "/physics/magnetic-field-direction",
     difficulty: "Advanced",
+    concepts: ["Magnetic Flux", "Currents"],
+    prerequisites: ["magnetic-field-wires"],
+    nextTopics: []
   },
+  {
+    id: "solar-system",
+    title: "Solar System",
+    description: "Explore planets and the structure of the solar system in 3D",
+    subject: "physics",
+    link: "/physics/solar-system",
+    difficulty: "Beginner",
+    concepts: ["Astronomy", "Gravity"],
+    prerequisites: [],
+    nextTopics: []
+  },
+  {
+  id: "geometry-shapes",
+  subject: "mathematics",
+  title: "Geometry Shapes",
+  description: "Visualize geometric figures interactively with dynamic diagrams."
+},
+{
+  id: "probability-simulator",
+  subject: "mathematics",
+  title: "Probability Simulator",
+  description: "Experiment with randomness and probability distributions."
+}
+
 ];
 
-export const SUBJECTS = ["biology", "chemistry", "physics"];
+export const SUBJECTS = ["biology", "chemistry", "physics", "mathematics"];

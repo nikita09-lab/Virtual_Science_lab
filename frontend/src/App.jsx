@@ -12,13 +12,17 @@ import Physics from "./pages/Physics";
 import FAQ from "./pages/FAQ";
 import Policy from "./pages/Policy";
 import Terms from "./pages/Terms";
+import NotFound from "./pages/NotFound";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Mathematics from "./pages/Mathematics";
 
 import Feedback from "./pages/Feedback";
 function App() {
   return (
-    <BrowserRouter>
-      {/* Main Layout */}
-      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-white">
+    <ErrorBoundary>
+      <BrowserRouter>
+        {/* Main Layout */}
+        <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-white">
         
         {/* Navbar */}
         <Navbar />
@@ -33,7 +37,7 @@ function App() {
             <Route path="/biology/*" element={<Biology />} />
             <Route path="/chemistry/*" element={<Chemistry />} />
             <Route path="/physics/*" element={<Physics />} />
-
+            <Route path="/mathematics/*" element={<Mathematics />} />
             {/* FAQ */}
             <Route path="/faq" element={<FAQ />} />
 
@@ -73,13 +77,15 @@ function App() {
                 
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
 
         {/* Floating AI Assistant */}
         <Ask />
       </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

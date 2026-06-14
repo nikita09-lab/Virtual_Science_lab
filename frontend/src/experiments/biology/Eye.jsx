@@ -1,14 +1,8 @@
 import biologyData from "../../data/biology.json";
 import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
-import ExperimentChatbot from "../../components/ExperimentChatbot";
-
-const Eye = () => {
-  const experiment = biologyData.experiments.find((exp) => exp.id === "eye");
-import Quiz from "../../components/Quiz";
-import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
-
-import SimulationViewer from "../../components/SimulationViewer";
+import LabAssistantPanel from "../../components/LabAssistantPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const Eye = () => {
 
@@ -59,9 +53,10 @@ const Eye = () => {
         precautions={experiment.precautions}
       />
 
-      <ExperimentChatbot experiment={experiment} subject="biology" />
+      <LabAssistantPanel experiment={experiment} subject="biology" />
       <Quiz experimentId="eye" subject="biology" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="eye" />
         <ExperimentNotesPanel experimentId="eye" />
       </div>
     </div>
@@ -69,4 +64,5 @@ const Eye = () => {
 };
 
 export default Eye;
+
 

@@ -1,5 +1,5 @@
 const DB_NAME = "virtual-science-lab-db";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 let dbInstance = null;
 
@@ -45,6 +45,11 @@ export const initDb = () => {
       // 7. Experiment History store (New)
       if (!db.objectStoreNames.contains("experiment_history")) {
         db.createObjectStore("experiment_history", { keyPath: "id", autoIncrement: true });
+      }
+
+      // 8. Notebook store
+      if (!db.objectStoreNames.contains("notebook")) {
+        db.createObjectStore("notebook", { keyPath: "experiment_id" });
       }
     };
 
@@ -218,7 +223,55 @@ export const offlineDb = {
     });
   },
 
-  // --- SYNC OUTBOX QUEUE ---
+  // --- NOTEBOOK ---
+  async getNotebooks() {
+    const store = await getStore("notebook", "readonly");
+    return new Promise((resolve) => {
+      const req = store.getAll();
+      req.onsuccess = () => {
+        const notebooksMap = {};
+        for (const nb of req.result) {
+          notebooksMap[nb.experiment_id] = nb;
+        }
+        resolve(notebooksMap);
+      };
+      req.onerror = () => resolve({});
+    });
+  },
+
+  async getNotebook(experimentId) {
+    const store = await getStore("notebook", "readonly");
+    return new Promise((resolve) => {
+      const req = store.get(experimentId);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  },
+
+  async saveNotebook(notebook) {
+    const store = await getStore("notebook", "readwrite");
+    return new Promise((resolve) => {
+      const req = store.put(notebook);
+      req.onsuccess = () => resolve(true);
+      req.onerror = () => resolve(false);
+    });
+  },
+
+  async saveAllNotebooks(notebooksMap) {
+    const db = await initDb();
+    const tx = db.transaction("notebook", "readwrite");
+    const store = tx.objectStore("notebook");
+    store.clear();
+    for (const id in notebooksMap) {
+      store.put(notebooksMap[id]);
+    }
+    return new Promise((resolve) => {
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  },
+
+  // --- SYNC OUTBOX QUEUE (Refactored for Issue #122) ---
   async getSyncQueue() {
     const store = await getStore("sync_queue", "readonly");
     return new Promise((resolve) => {
@@ -230,9 +283,17 @@ export const offlineDb = {
 
   async queueAction(type, payload) {
     const store = await getStore("sync_queue", "readwrite");
+    
+    // 📌 Deterministic Idempotency Key: Cryptographically secure UUID
+    const actionId = crypto.randomUUID();
+    
+    // 📌 OCC State Tracker: Extract version identifier from payload or default to structural 1
+    const currentVersion = payload.__v || payload.version || 1;
+
     const action = {
-      id: `${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: actionId,
       type,
+      version: currentVersion,
       payload,
       timestamp: new Date().toISOString()
     };
@@ -248,10 +309,33 @@ export const offlineDb = {
           ...existingNoteAction.payload,
           ...payload
         };
+        // Ensure atomic version tracking cascades across local merges
+        existingNoteAction.version = payload.__v || payload.version || existingNoteAction.version || 1;
         existingNoteAction.timestamp = action.timestamp;
         return new Promise((resolve) => {
           const req = store.put(existingNoteAction);
           req.onsuccess = () => resolve(existingNoteAction.id);
+          req.onerror = () => resolve(null);
+        });
+      }
+    }
+    
+    // Notebook updates de-duplication
+    if (type === "notebook") {
+      const all = await this.getSyncQueue();
+      const existingAction = all.find(
+        (a) => a.type === "notebook" && a.payload.experiment_id === payload.experiment_id
+      );
+      if (existingAction) {
+        existingAction.payload = {
+          ...existingAction.payload,
+          ...payload
+        };
+        existingAction.version = payload.__v || payload.version || existingAction.version || 1;
+        existingAction.timestamp = action.timestamp;
+        return new Promise((resolve) => {
+          const req = store.put(existingAction);
+          req.onsuccess = () => resolve(existingAction.id);
           req.onerror = () => resolve(null);
         });
       }

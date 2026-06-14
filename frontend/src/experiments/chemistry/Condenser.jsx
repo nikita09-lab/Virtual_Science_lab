@@ -1,14 +1,8 @@
 import chemistryData from "../../data/chemistry.json";
 import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
-import ExperimentChatbot from "../../components/ExperimentChatbot";
-
-const Condenser = () => {
-  const experiment = chemistryData.experiments.find((exp) => exp.id === "condenser");
-import Quiz from "../../components/Quiz";
-import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
-
-import SimulationViewer from "../../components/SimulationViewer";
+import LabAssistantPanel from "../../components/LabAssistantPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 const Condenser = () => {
 
@@ -58,9 +52,10 @@ const Condenser = () => {
         precautions={experiment.precautions}
       />
 
-      <ExperimentChatbot experiment={experiment} subject="chemistry" />
+      <LabAssistantPanel experiment={experiment} subject="chemistry" />
       <Quiz experimentId="condenser" subject="chemistry" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="condenser" />
         <ExperimentNotesPanel experimentId="condenser" />
       </div>
     </div>
@@ -68,3 +63,4 @@ const Condenser = () => {
 };
 
 export default Condenser;
+

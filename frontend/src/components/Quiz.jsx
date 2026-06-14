@@ -1,7 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, memo } from "react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
-import { useGamification } from "../context/GamificationContext";
+import { useGamificationMeta } from "../context/GamificationContext";
 import quizData from "../data/quizzes.json";
+import { offlineDb } from "../utils/offlineDb";
+import API_URL from "../config";
+
+const BASE_URL = 
+  typeof window !== "undefined" && 
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    ? "http://127.0.0.1:8000"
+    : API_URL;
 
 const formatDateTime = (value) => {
   if (!value) return "Just now";
@@ -21,7 +29,8 @@ const getScoreTone = (score, total) => {
 };
 
 const Quiz = ({ experimentId, subject }) => {
-  const { submitQuiz, completedQuizzes, quizAttempts } = useGamification();
+  // ⚡ Critical Optimization: Use low-frequency Meta context to completely bypass high-frequency XP state updates
+  const { submitQuiz, completedQuizzes, quizAttempts } = useGamificationMeta();
   const questions = quizData.quizzes[experimentId] || [];
 
   const [quizStarted, setQuizStarted] = useState(false);
@@ -80,10 +89,9 @@ const Quiz = ({ experimentId, subject }) => {
   const handleSubmitScore = async () => {
     setSubmitting(true);
 
-    // 1. Prepare the history record
     const historyRecord = {
-      user_id: "default-student", // Ensure this matches your auth user
-      experiment_name: experimentId, // Or a more descriptive title if available
+      user_id: "default-student", 
+      experiment_name: experimentId, 
       subject: subject,
       score: correctAnswers,
       timestamp: new Date().toISOString()
@@ -117,8 +125,17 @@ try {
 } catch (err) {
   console.warn("Offline save failed:", err);
 }
+    const result = await submitQuiz(
+      experimentId,
+      correctAnswers,
+      subject,
+      selectedAnswers,
+      questions.length
+    );
 
-    // 5. Attempt immediate API call if online
+    await offlineDb.saveExperimentHistory(historyRecord);
+    await offlineDb.queueAction("experiment_history", historyRecord);
+
     if (navigator.onLine) {
       try {
         await fetch(`${BASE_URL}/api/progress/history`, {
@@ -394,4 +411,5 @@ try {
   );
 };
 
-export default Quiz;
+// Component Layout Lifecycle Guarding: Prevent parent re-renders from trickling down
+export default memo(Quiz);

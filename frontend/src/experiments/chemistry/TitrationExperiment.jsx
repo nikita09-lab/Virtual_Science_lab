@@ -3,6 +3,7 @@ import InstructionPanel from "../../components/InstructionPanel";
 import BackButton from "../../components/BackButton";
 import Quiz from "../../components/Quiz";
 import ExperimentNotesPanel from "../../components/ExperimentNotesPanel";
+import DataVisualizerPanel from "../../components/DataVisualizerPanel";
 
 import SimulationViewer from "../../components/SimulationViewer";
 
@@ -38,6 +39,7 @@ const TitrationExperiment = () => {
 
       <Quiz experimentId="titration-experiment" subject="chemistry" />
       <div style={{ marginTop: "24px" }}>
+        <DataVisualizerPanel experimentId="titration-experiment" />
         <ExperimentNotesPanel experimentId="titration-experiment" />
       </div>
     </div>
@@ -45,3 +47,4 @@ const TitrationExperiment = () => {
 };
 
 export default TitrationExperiment;
+

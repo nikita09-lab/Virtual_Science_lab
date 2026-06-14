@@ -1,7 +1,8 @@
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from app.api.deps import get_current_user
 from app.models.schemas import ExperimentNotesResponse, ExperimentNotesUpsertRequest
 from app.services import notes_service
 
@@ -11,7 +12,11 @@ notes_service.init_db()
 router = APIRouter(prefix="/api/notes", tags=["notes"])
 
 
-@router.get("/{user_id}/{experiment_id}", response_model=ExperimentNotesResponse)
+@router.get(
+    "/{user_id}/{experiment_id}",
+    response_model=ExperimentNotesResponse,
+    dependencies=[Depends(get_current_user)],
+)
 def get_notes(user_id: str, experiment_id: str):
     try:
         notes = notes_service.get_user_experiment_notes(user_id=user_id, experiment_id=experiment_id)
@@ -32,7 +37,11 @@ def get_notes(user_id: str, experiment_id: str):
         raise exc
 
 
-@router.post("/upsert", response_model=ExperimentNotesResponse)
+@router.post(
+    "/upsert",
+    response_model=ExperimentNotesResponse,
+    dependencies=[Depends(get_current_user)],
+)
 def upsert_notes(payload: ExperimentNotesUpsertRequest):
     return notes_service.upsert_user_experiment_notes(
         user_id=payload.user_id,
