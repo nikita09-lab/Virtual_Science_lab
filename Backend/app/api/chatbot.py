@@ -51,7 +51,7 @@ class ChatResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 @router.post("/ask", response_model=ChatResponse)
-async def ask_chatbot(data: ChatRequest):
+def ask_chatbot(data: ChatRequest):
     """
     Accept a student question in the context of an experiment and return
     an AI-generated (or mock) answer.
