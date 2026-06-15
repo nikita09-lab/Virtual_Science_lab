@@ -284,8 +284,13 @@ export const offlineDb = {
   async queueAction(type, payload) {
     const store = await getStore("sync_queue", "readwrite");
     
-    // 📌 Deterministic Idempotency Key: Cryptographically secure UUID
-    const actionId = crypto.randomUUID();
+    // 📌 Deterministic Idempotency Key: Support HTTP environments where crypto.randomUUID is undefined
+    const actionId = (typeof crypto !== 'undefined' && crypto.randomUUID) 
+      ? crypto.randomUUID() 
+      : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
     
     // 📌 OCC State Tracker: Extract version identifier from payload or default to structural 1
     const currentVersion = payload.__v || payload.version || 1;
