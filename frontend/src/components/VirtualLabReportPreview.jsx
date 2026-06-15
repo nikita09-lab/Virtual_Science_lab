@@ -30,6 +30,17 @@ const VirtualLabReportPreview = ({ report, onClose }) => {
   const { updateReport, exportMarkdown, reportToMarkdown, usingLocalFallback } = useReports();
   const [draft, setDraft] = useState(report);
   const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(reportToMarkdown(draft));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy", err);
+    }
+  };
 
   useEffect(() => {
     setDraft(report);
@@ -215,6 +226,13 @@ const VirtualLabReportPreview = ({ report, onClose }) => {
             className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             Local MD
+          </button>
+          <button
+            type="button"
+            onClick={handleCopyToClipboard}
+            className="rounded-lg border border-purple-300 bg-purple-50 px-4 py-2 text-sm font-bold text-purple-700 hover:bg-purple-100 dark:border-purple-800 dark:bg-purple-900/40 dark:text-purple-300 dark:hover:bg-purple-900/60"
+          >
+            {copied ? "Copied!" : "Copy to Clipboard"}
           </button>
         </div>
       </div>
