@@ -90,6 +90,10 @@ self.addEventListener("fetch", (event) => {
           })
           .catch(() => {
             if (cachedResponse) return cachedResponse;
+            // PWA SPA Fallback: If it's a navigation request, serve index.html
+            if (request.mode === "navigate") {
+              return caches.match("/index.html");
+            }
             // Return safe fallback response if offline and asset not in cache
             return new Response("Offline Mode. Asset not cached.", {
               status: 503,
