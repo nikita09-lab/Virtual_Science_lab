@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/exhaustive-deps */
 // src/components/NotebookEditorRich.jsx
 import React, { useState, useEffect } from "react";
