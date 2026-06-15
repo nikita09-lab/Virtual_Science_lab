@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from bson import ObjectId
 from pymongo import DESCENDING
 
@@ -87,7 +87,7 @@ def add_review(doc_id: str, user_id: str, rating: int, rubric_scores: dict, comm
     
     try:
         obj_id = ObjectId(doc_id)
-    except:
+    except Exception:
         return None
         
     result = db["classroom_reports"].find_one_and_update(
@@ -110,7 +110,7 @@ def add_comment(doc_id: str, user_id: str, text: str) -> Optional[dict]:
     
     try:
         obj_id = ObjectId(doc_id)
-    except:
+    except Exception:
         return None
         
     result = db["classroom_reports"].find_one_and_update(
