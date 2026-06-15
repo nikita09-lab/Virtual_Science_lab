@@ -25,6 +25,7 @@ import CareerExplorer from "./pages/CareerExplorer";
 import Login from "./pages/Login";
 import FAQ from "./pages/FAQ";
 import Policy from "./pages/Policy";
+import NotFound from "./pages/NotFound";
 
 const AppRouter = () => {
   return (
@@ -57,6 +58,7 @@ const AppRouter = () => {
          <Route path="/login" element={<Login />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/policy" element={<Policy />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
