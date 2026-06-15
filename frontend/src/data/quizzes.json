@@ -79,7 +79,32 @@
         "question": "Photoreceptor cells, rods and cones, are located in which thin layer of the eye?",
         "options": ["Cornea", "Retina", "Lens", "Pupil"],
         "correct": 1
-      }
+      },
+  {
+    "question": "Which part of the eye detects light?",
+    "options": ["Retina", "Lens", "Cornea", "Iris"],
+    "correct": 0
+  },
+  {
+    "question": "The pupil is actually an opening that allows light to enter the eye.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "Which structure protects the transparent front surface of the eye?",
+    "options": ["Cornea", "Retina", "Optic Nerve", "Lens"],
+    "correct": 0
+  },
+  {
+    "question": "Which cells are responsible for color vision?",
+    "options": ["Rods", "Cones", "Neurons", "Fibers"],
+    "correct": 1
+  },
+  {
+    "question": "The optic nerve carries signals from the eye to the brain.",
+    "options": ["True", "False"],
+    "correct": 0
+  }
     ],
     "kidney": [
       {
@@ -160,8 +185,116 @@
         "question": "Baking soda, chemically known as sodium bicarbonate, acts as a base in the volcano reaction.",
         "options": ["True", "False"],
         "correct": 0
-      }
-    ],
+      },
+  {
+    "question": "Which organ pumps blood throughout the human body?",
+    "options": ["Liver", "Heart", "Lungs", "Kidney"],
+    "correct": 1
+  },
+  {
+    "question": "Bones and muscles together make up which body system?",
+    "options": ["Digestive System", "Skeletal System", "Respiratory System", "Endocrine System"],
+    "correct": 1
+  },
+  {
+    "question": "Which blood vessels carry blood away from the heart?",
+    "options": ["Veins", "Capillaries", "Arteries", "Nerves"],
+    "correct": 2
+  },
+  {
+    "question": "The skin is the largest organ of the human body.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "Which organ filters waste from the blood?",
+    "options": ["Brain", "Kidney", "Lung", "Heart"],
+    "correct": 1
+  }
+],
+"mitochondia":[
+  {
+    "question": "Which process mainly occurs inside mitochondria?",
+    "options": ["Photosynthesis", "Cellular Respiration", "Protein Digestion", "DNA Replication"],
+    "correct": 1
+  },
+  {
+    "question": "Mitochondria are found only in plant cells.",
+    "options": ["True", "False"],
+    "correct": 1
+  },
+  {
+    "question": "Which molecule is produced as the main energy source by mitochondria?",
+    "options": ["ATP", "DNA", "RNA", "Glucose"],
+    "correct": 0
+  },
+  {
+    "question": "Cristae are folds of which mitochondrial membrane?",
+    "options": ["Outer", "Inner", "Nuclear", "Cell"],
+    "correct": 1
+  },
+  {
+    "question": "Mitochondria contain their own ribosomes.",
+    "options": ["True", "False"],
+    "correct": 0
+  }
+],
+
+"solar-system":[
+  {
+    "question": "Which planet has the most prominent ring system?",
+    "options": ["Mars", "Saturn", "Earth", "Mercury"],
+    "correct": 1
+  },
+  {
+    "question": "Which celestial body orbits the Earth?",
+    "options": ["Sun", "Moon", "Mars", "Venus"],
+    "correct": 1
+  },
+  {
+    "question": "The Earth completes one revolution around the Sun in approximately how many days?",
+    "options": ["30", "180", "365", "730"],
+    "correct": 2
+  },
+  {
+    "question": "Pluto is currently classified as a dwarf planet.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "Which planet is known for its Great Red Spot?",
+    "options": ["Venus", "Jupiter", "Neptune", "Mars"],
+    "correct": 1
+  }
+],
+"velocity-acceleration":[
+  {
+    "question": "Speed differs from velocity because speed has no direction.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "Acceleration can occur even when speed remains constant if direction changes.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "Which formula represents acceleration?",
+    "options": ["Distance × Time", "Velocity ÷ Time", "Change in Velocity ÷ Time", "Speed × Distance"],
+    "correct": 2
+  },
+  {
+    "question": "An object moving with constant velocity has zero acceleration.",
+    "options": ["True", "False"],
+    "correct": 0
+  },
+  {
+    "question": "The SI unit of velocity is:",
+    "options": ["m/s", "m/s²", "km", "N"],
+    "correct": 0
+  }
+],
+
     "condenser": [
       {
         "question": "A condenser's primary purpose is to convert liquid into gas through boiling.",

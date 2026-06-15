@@ -183,6 +183,15 @@ Before submitting a PR, make sure:
 
 ---
 
+### 🧹 Pre-commit Hooks
+
+This project uses **husky** + **lint-staged** to enforce linting before commits.
+
+- ESLint runs automatically on staged `.js` and `.jsx` files.
+- If lint errors are found, the commit will be blocked until they are fixed.
+- To skip linting (not recommended), use `git commit --no-verify`.
+
+
 ## Reporting Issues
 
 If you discover bugs or want to suggest improvements:

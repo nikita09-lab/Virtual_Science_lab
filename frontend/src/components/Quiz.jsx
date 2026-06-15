@@ -50,7 +50,7 @@ const Quiz = ({ experimentId, subject }) => {
     return null;
   }
 
-  const currentQuestion = questions[currentIdx];
+  const currentQuestion = questions[currentIdx] ?? {};
   const selectedOption = selectedAnswers[currentIdx];
   const isAnswered = selectedOption !== undefined;
   const correctAnswers = selectedAnswers.reduce(
@@ -90,23 +90,33 @@ const Quiz = ({ experimentId, subject }) => {
     setSubmitting(true);
 
     const historyRecord = {
-      user_id: "default-student", 
-      experiment_name: experimentId, 
+      user_id: "default-student",
+      experiment_name: experimentId,
       subject: subject,
       score: correctAnswers,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    const result = await submitQuiz(
-      experimentId,
-      correctAnswers,
-      subject,
-      selectedAnswers,
-      questions.length
-    );
+    let result = null;
 
-    await offlineDb.saveExperimentHistory(historyRecord);
-    await offlineDb.queueAction("experiment_history", historyRecord);
+    try {
+      result = await submitQuiz(
+        experimentId,
+        correctAnswers,
+        subject,
+        selectedAnswers,
+        questions.length
+      );
+    } catch (err) {
+      console.error("Quiz submission failed:", err);
+    }
+
+    try {
+      await offlineDb.saveExperimentHistory(historyRecord);
+      await offlineDb.queueAction("experiment_history", historyRecord);
+    } catch (err) {
+      console.warn("Offline save failed:", err);
+    }
 
     if (navigator.onLine) {
       try {
@@ -129,7 +139,7 @@ const Quiz = ({ experimentId, subject }) => {
 
   const getExplanation = (question) =>
     question.explanation ||
-    `Correct answer: ${question.options[question.correct]}. Review the experiment notes to connect this concept with the observation.`;
+    `Correct answer: ${question.options?.[question.correct] ?? "Unknown"}. Review the experiment notes to connect this concept with the observation.`;
 
   const getOptionStyle = (index) => {
     if (!isAnswered) {
@@ -338,7 +348,7 @@ const Quiz = ({ experimentId, subject }) => {
                   </span>
                   {xpReport && (
                     <p className="mt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                      +{xpReport.xpEarned} XP earned. Total XP: {xpReport.totalXp}
+                      +{xpReport?.xpEarned ?? 0} XP earned. Total XP: {xpReport.totalXp}
                     </p>
                   )}
                 </div>
@@ -354,7 +364,7 @@ const Quiz = ({ experimentId, subject }) => {
                 <div className="space-y-2">
                   {experimentAttempts.slice(0, 4).map((attempt) => (
                     <div
-                      key={attempt.id}
+                      key={attempt.id ?? attempt.attempted_at}
                       className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 text-sm dark:bg-slate-800/50"
                     >
                       <span className="font-semibold text-slate-600 dark:text-slate-300">
