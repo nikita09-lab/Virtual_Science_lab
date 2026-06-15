@@ -8,6 +8,7 @@ import {
   Wifi,
   Trophy,
   Moon,
+  Search,
 } from "lucide-react";
 
 const faqSections = [
@@ -144,6 +145,18 @@ function Accordion({ item, open, onClick }) {
 
 export default function FAQ() {
   const [active, setActive] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredSections = faqSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter(
+        (item) =>
+          item.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.a.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((section) => section.items.length > 0);
 
   let indexCounter = 0;
 
@@ -169,13 +182,31 @@ export default function FAQ() {
             XP rewards, weekly challenges, and smart educational tools inside
             Virtual Science Lab.
           </p>
+
+          <div className="relative mx-auto mt-8 max-w-xl">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+              <Search className="h-5 w-5 text-white/50" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search frequently asked questions..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-2xl border border-white/20 bg-white/10 py-4 pl-12 pr-4 text-white placeholder-white/50 backdrop-blur-md transition focus:border-cyan-400 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+            />
+          </div>
         </div>
       </section>
 
       {/* FAQ Content */}
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="space-y-14">
-          {faqSections.map((section, sectionIndex) => (
+          {filteredSections.length === 0 ? (
+            <div className="py-10 text-center text-xl text-white/50">
+              No frequently asked questions found matching "{searchTerm}".
+            </div>
+          ) : (
+            filteredSections.map((section, sectionIndex) => (
             <div key={sectionIndex}>
               {/* Section Title */}
               <div className="mb-6 flex items-center gap-3">
@@ -206,7 +237,8 @@ export default function FAQ() {
                 })}
               </div>
             </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Bottom Card */}
