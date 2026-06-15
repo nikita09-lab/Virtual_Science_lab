@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import BadgeNotification from "./components/BadgeNotification";
 import SyncManager from "./components/SyncManager";
 import ParticipantPresence from "./components/collaboration/ParticipantPresence";
+import ScientificCalculatorWidget from "./components/ScientificCalculatorWidget";
 
 /* Main Pages */
 import Home from "./pages/Home";
@@ -21,10 +22,14 @@ import LeaderboardDashboard from "./pages/LeaderboardDashboard";
 import TeamSessionLobby from "./pages/TeamSessionLobby";
 import NotebookDashboard from "./pages/NotebookDashboard";
 import NotebookEditor from "./pages/NotebookEditor";
+import NotebookEditorRich from "./components/NotebookEditorRich";
+import NotebookReport from "./pages/NotebookReport";
 import CareerExplorer from "./pages/CareerExplorer";
 import Login from "./pages/Login";
 import FAQ from "./pages/FAQ";
 import Policy from "./pages/Policy";
+import Sandbox from "./pages/Sandbox";
+import ClassroomFeed from "./pages/ClassroomFeed";
 import NotFound from "./pages/NotFound";
 
 const AppRouter = () => {
@@ -34,6 +39,7 @@ const AppRouter = () => {
       <ParticipantPresence />
       <BadgeNotification />
       <SyncManager />
+      <ScientificCalculatorWidget />
       <Routes>
         {/* Home */}
         <Route path="/" element={<Home />} />
@@ -52,12 +58,16 @@ const AppRouter = () => {
         <Route path="/my-progress" element={<MyProgress />} />
         <Route path="/notebook" element={<NotebookDashboard />} />
         <Route path="/notebook/:experimentId" element={<NotebookEditor />} />
+        <Route path="/notebook/:experimentId/rich" element={<NotebookEditorRich />} />
+        <Route path="/notebook/:experimentId/report" element={<NotebookReport />} />
         <Route path="/collaborate" element={<TeamSessionLobby />} />
         <Route path="/leaderboard" element={<LeaderboardDashboard />} />
         <Route path="/careers" element={<CareerExplorer />} />
          <Route path="/login" element={<Login />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/policy" element={<Policy />} />
+        <Route path="/sandbox" element={<Sandbox />} />
+        <Route path="/classroom-feed" element={<ClassroomFeed />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

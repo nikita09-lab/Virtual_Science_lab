@@ -23,28 +23,27 @@ Collections used (all inside the 'virtual_science_lab' database):
 """
 
 from datetime import datetime, timezone
-from pymongo import MongoClient, ASCENDING
+from pymongo import ASCENDING
 
-from app.core.config import MONGODB_URI
+from app.core.db import get_database
 
 # ---------------------------------------------------------------------------
 # Connection singleton (reused across warm serverless invocations)
 # ---------------------------------------------------------------------------
-_client: MongoClient = None
-_db = None
+_indexes_created = False
 
 def _get_db():
-    global _client, _db
-    if _client is None:
-        _client = MongoClient(MONGODB_URI)
-        _db = _client["virtual_science_lab"]
-        _db["user_gamification"].create_index(
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
+        db["user_gamification"].create_index(
             [("user_id", ASCENDING)], unique=True
         )
-        _db["quiz_attempts"].create_index(
+        db["quiz_attempts"].create_index(
             [("user_id", ASCENDING), ("experiment_id", ASCENDING)]
         )
-    return _db
+        _indexes_created = True
+    return db
 
 # ---------------------------------------------------------------------------
 # Experiment / badge configuration  — updated to include acid-base-neutralization

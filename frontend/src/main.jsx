@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./router";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { OnlineStatusProvider } from "./context/OnlineStatusContext";
 import { GamificationProvider } from "./context/GamificationContext";
@@ -11,6 +12,7 @@ import { NotebookProvider } from "./context/NotebookContext";
 import { PredictionProvider } from "./context/PredictionContext";
 import { CollaborationProvider } from "./context/CollaborationContext";
 import { ReportsProvider } from "./context/ReportsContext";
+import { ReviewsProvider } from "./context/ReviewsContext";
 import "./styles/globals.css";
 import "./index.css";
 import enableSparkleCursor from "./components/SparkleCursor";
@@ -30,7 +32,11 @@ function Root() {
   useEffect(() => {
     if (sparkleEnabled) enableSparkleCursor();
   }, [sparkleEnabled]);
-  return <AppRouter />;
+  return (
+    <ErrorBoundary>
+      <AppRouter />
+    </ErrorBoundary>
+  );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -45,7 +51,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                   <PredictionProvider>
                     <CollaborationProvider>
                       <ReportsProvider>
-                        <Root />
+                        <ReviewsProvider>
+                          <Root />
+                        </ReviewsProvider>
                       </ReportsProvider>
                     </CollaborationProvider>
                   </PredictionProvider>
