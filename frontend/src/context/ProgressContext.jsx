@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import API_URL from "../config";
 import { offlineDb } from "../utils/offlineDb";
 
@@ -31,13 +31,13 @@ export const ProgressProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [usingLocalFallback, setUsingLocalFallback] = useState(false);
 
-  const refreshProgress = async () => {
+  const refreshProgress = useCallback(async (signal) => {
     setLoading(true);
     try {
       if (typeof navigator !== "undefined" && !navigator.onLine) {
         throw new Error("Offline mode: skipping API fetch for progress");
       }
-      const res = await fetch(`${BASE_URL}/api/progress/${USER_ID}`);
+      const res = await fetch(`${BASE_URL}/api/progress/${USER_ID}`, { signal });
       if (!res.ok) throw new Error("Progress API unavailable");
       const data = await res.json();
       setRecords(data);
@@ -46,18 +46,19 @@ export const ProgressProvider = ({ children }) => {
       setUsingLocalFallback(false);
       
       try {
-        const recRes = await fetch(`${BASE_URL}/api/recommendations/${USER_ID}`);
+        const recRes = await fetch(`${BASE_URL}/api/recommendations/${USER_ID}`, { signal });
         if (recRes.ok) {
           const recData = await recRes.json();
           setRecommendations(recData);
           offlineDb.saveRecommendations(USER_ID, recData);
         }
-      } catch {
-        // Fallback for recommendation fetch if it fails independently
+      } catch (recErr) {
+        if (recErr.name === 'AbortError') return;
         const cachedRecs = await offlineDb.getRecommendations(USER_ID);
         setRecommendations(cachedRecs || []);
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.log("Loading offline progress & recommendations:", err.message);
       setUsingLocalFallback(true);
       const cachedProgress = await offlineDb.getProgress();
@@ -69,13 +70,15 @@ export const ProgressProvider = ({ children }) => {
       const cachedRecs = await offlineDb.getRecommendations(USER_ID);
       setRecommendations(cachedRecs || []);
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    refreshProgress();
-  }, []);
+    const controller = new AbortController();
+    refreshProgress(controller.signal);
+    return () => controller.abort();
+  }, [refreshProgress]);
 
   const markExperimentComplete = async (experiment, completed = true) => {
     const record = {

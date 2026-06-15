@@ -17,26 +17,29 @@ export const NotebookProvider = ({ children }) => {
   const [notebooks, setNotebooks] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const fetchNotebooks = useCallback(async () => {
+  const fetchNotebooks = useCallback(async (signal) => {
     setLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/api/notebook/${USER_ID}`);
+      const res = await fetch(`${BASE_URL}/api/notebook/${USER_ID}`, { signal });
       if (!res.ok) throw new Error("Failed to fetch notebooks");
       const data = await res.json();
       const notebooksMap = {};
       data.forEach(nb => { notebooksMap[nb.experiment_id] = nb; });
       setNotebooks(notebooksMap);
       offlineDb.saveAllNotebooks(notebooksMap);
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       const cached = await offlineDb.getNotebooks();
       if (cached) setNotebooks(cached);
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchNotebooks();
+    const controller = new AbortController();
+    fetchNotebooks(controller.signal);
+    return () => controller.abort();
   }, [fetchNotebooks]);
 
   const upsertNotebook = useCallback(async (experimentId, payload) => {

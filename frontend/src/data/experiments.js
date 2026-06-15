@@ -154,17 +154,27 @@ export const EXPERIMENT_CATALOG = [
     nextTopics: []
   },
   {
-  id: "geometry-shapes",
-  subject: "mathematics",
-  title: "Geometry Shapes",
-  description: "Visualize geometric figures interactively with dynamic diagrams."
-},
-{
-  id: "probability-simulator",
-  subject: "mathematics",
-  title: "Probability Simulator",
-  description: "Experiment with randomness and probability distributions."
-}
+    id: "geometry-shapes",
+    title: "Geometry Shapes",
+    description: "Visualize geometric figures interactively with dynamic diagrams.",
+    subject: "mathematics",
+    link: "/mathematics/geometry-shapes",
+    difficulty: "Beginner",
+    concepts: ["Geometry", "Spatial Reasoning"],
+    prerequisites: [],
+    nextTopics: ["probability-simulator"]
+  },
+  {
+    id: "probability-simulator",
+    title: "Probability Simulator",
+    description: "Experiment with randomness and probability distributions.",
+    subject: "mathematics",
+    link: "/mathematics/probability-simulator",
+    difficulty: "Intermediate",
+    concepts: ["Probability", "Statistics"],
+    prerequisites: ["geometry-shapes"],
+    nextTopics: []
+  }
 
 ];
 
