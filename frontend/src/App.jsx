@@ -1,22 +1,23 @@
 // src/App.jsx
 
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Ask from "./components/Ask";
-
-import Home from "./pages/Home";
-import Biology from "./pages/Biology";
-import Chemistry from "./pages/Chemistry";
-import Physics from "./pages/Physics";
-import FAQ from "./pages/FAQ";
-import Policy from "./pages/Policy";
-import Terms from "./pages/Terms";
-import NotFound from "./pages/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Mathematics from "./pages/Mathematics";
 
-import Feedback from "./pages/Feedback";
+// Lazy-loaded route components for extreme bundle optimization (Level 3 Fix)
+const Home = lazy(() => import("./pages/Home"));
+const Biology = lazy(() => import("./pages/Biology"));
+const Chemistry = lazy(() => import("./pages/Chemistry"));
+const Physics = lazy(() => import("./pages/Physics"));
+const Mathematics = lazy(() => import("./pages/Mathematics"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Policy = lazy(() => import("./pages/Policy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Feedback = lazy(() => import("./pages/Feedback"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 function App() {
   return (
     <ErrorBoundary>
@@ -27,29 +28,40 @@ function App() {
         {/* Navbar */}
         <Navbar />
 
-        {/* Page Routes */}
+        {/* Page Routes wrapped in Suspense for code splitting */}
         <main>
-          <Routes>
-            {/* Home */}
-            <Route path="/" element={<Home />} />
+          <Suspense 
+            fallback={
+              <div className="flex min-h-[75vh] items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600"></div>
+                  <p className="text-sm font-bold text-slate-500 animate-pulse">Loading simulation environment...</p>
+                </div>
+              </div>
+            }
+          >
+            <Routes>
+              {/* Home */}
+              <Route path="/" element={<Home />} />
 
-            {/* Subject Pages */}
-            <Route path="/biology/*" element={<Biology />} />
-            <Route path="/chemistry/*" element={<Chemistry />} />
-            <Route path="/physics/*" element={<Physics />} />
-            <Route path="/mathematics/*" element={<Mathematics />} />
-            {/* FAQ */}
-            <Route path="/faq" element={<FAQ />} />
+              {/* Subject Pages */}
+              <Route path="/biology/*" element={<Biology />} />
+              <Route path="/chemistry/*" element={<Chemistry />} />
+              <Route path="/physics/*" element={<Physics />} />
+              <Route path="/mathematics/*" element={<Mathematics />} />
+              {/* FAQ */}
+              <Route path="/faq" element={<FAQ />} />
 
-            {/* Policy */}
-            <Route path="/policy" element={<Policy />} />
+              {/* Policy */}
+              <Route path="/policy" element={<Policy />} />
 
-            <Route path="/terms" element={<Terms />} />
+              <Route path="/terms" element={<Terms />} />
 
-            <Route path="/feedback" element={<Feedback />} />
-            {/* 404 Not Found */}
+              <Route path="/feedback" element={<Feedback />} />
+              {/* 404 Not Found */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
+            </Routes>
+          </Suspense>
         </main>
 
         {/* Floating AI Assistant */}
