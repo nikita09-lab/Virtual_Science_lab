@@ -153,8 +153,8 @@ MONGODB_URI=mongodb+srv://your-uri
 ```
 Install dependencies and boot the FastAPI dev server:
 ```bash
-cd Backend
 pip install -r requirements.txt
+cd Backend
 uvicorn main:app --reload
 ```
 * The FastAPI server runs at: `http://localhost:8000`

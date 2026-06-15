@@ -120,9 +120,9 @@ npm run dev
 Open a new terminal and run:
 
 ```bash
-cd Backend
 pip install -r requirements.txt
-bash run.sh
+cd Backend
+uvicorn main:app --reload
 ```
 
 ---
@@ -182,6 +182,15 @@ Before submitting a PR, make sure:
 - The PR addresses a specific issue.
 
 ---
+
+### 🧹 Pre-commit Hooks
+
+This project uses **husky** + **lint-staged** to enforce linting before commits.
+
+- ESLint runs automatically on staged `.js` and `.jsx` files.
+- If lint errors are found, the commit will be blocked until they are fixed.
+- To skip linting (not recommended), use `git commit --no-verify`.
+
 
 ## Reporting Issues
 

@@ -1,13 +1,29 @@
 import { EXPERIMENT_CATALOG } from "../data/experiments";
 import SubjectDashboard from "./SubjectDashboard";
+import LoadingSkeleton from "../components/LoadingSkeleton";
+import { useState, useEffect } from "react";
 
 const PhysicsHome = () => {
-  const physicsExperiments = EXPERIMENT_CATALOG.filter(
-    (experiment) => experiment.subject === "physics"
-  );
+  const [physicsExperiments, setPhysicsExperiments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate async data load
+    setTimeout(() => {
+      const filtered = EXPERIMENT_CATALOG.filter(
+        (experiment) => experiment.subject === "physics"
+      );
+      setPhysicsExperiments(filtered);
+      setLoading(false);
+    }, 1000); // 1s delay for demo
+  }, []);
+
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
 
   return (
-    <SubjectDashboard 
+    <SubjectDashboard
       subject="physics"
       title="Physics Virtual Lab"
       description="Dive into interactive 3D simulations of motion, forces, and electromagnetism. Master the fundamental laws of the universe through hands-on experiments."
