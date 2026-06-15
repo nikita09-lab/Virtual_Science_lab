@@ -92,14 +92,14 @@ export const GamificationProvider = ({ children }) => {
     };
   }, []);
 
-  const fetchStatus = useCallback(async () => {
+  const fetchStatus = useCallback(async (signal) => {
     try {
       setLoading(true);
       if (!isOnline) {
         throw new Error("Offline mode: skipping gamification fetch");
       }
 
-      const res = await fetch(`${BASE_URL}/api/gamification/status?user_id=${USER_ID}`);
+      const res = await fetch(`${BASE_URL}/api/gamification/status?user_id=${USER_ID}`, { signal });
       if (res.ok) {
         const data = await res.json();
         setXp(data.xp);
@@ -117,6 +117,7 @@ export const GamificationProvider = ({ children }) => {
         offlineDb.saveAllQuizAttempts(data.quiz_attempts || []);
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.log("Loading offline gamification status:", err.message);
       
       const dbStats = await offlineDb.getGamificationStatus(USER_ID);
@@ -135,12 +136,14 @@ export const GamificationProvider = ({ children }) => {
       
       setQuizAttempts(dbAttempts || []);
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [isOnline]);
 
   useEffect(() => {
-    fetchStatus();
+    const controller = new AbortController();
+    fetchStatus(controller.signal);
+    return () => controller.abort();
   }, [fetchStatus]);
 
   const submitQuiz = useCallback(async (experimentId, score, subject, selectedAnswers = [], totalQuestions = 5) => {
