@@ -111,8 +111,10 @@ def process_single_sync_action(idempotency_key: str, action_type: str, version: 
             user_id = _sanitize_primitive_string(payload.get("user_id"))
             experiment_id = _sanitize_primitive_string(payload.get("experiment_id"))
             attempted_at = _sanitize_primitive_string(payload.get("attempted_at"))
-            score = int(payload.get("score", 0))
-            total_questions = int(payload.get("total_questions", 5))
+            s_val = payload.get("score")
+            score = int(s_val) if s_val is not None else 0
+            tq_val = payload.get("total_questions")
+            total_questions = int(tq_val) if tq_val is not None else 5
             subject_raw = _sanitize_primitive_string(payload.get("subject"))
             
             raw_answers = payload.get("selected_answers", [])
@@ -230,8 +232,10 @@ def sync_offline_actions(actions: List[Dict[str, Any]]) -> Dict[str, Any]:
             elif action_type == "quiz":
                 user_id = _sanitize_primitive_string(payload.get("user_id"))
                 experiment_id = _sanitize_primitive_string(payload.get("experiment_id"))
-                score = int(payload.get("score", 0))
-                total_questions = int(payload.get("total_questions", 5))
+                s_val = payload.get("score")
+                score = int(s_val) if s_val is not None else 0
+                tq_val = payload.get("total_questions")
+                total_questions = int(tq_val) if tq_val is not None else 5
                 subject_raw = _sanitize_primitive_string(payload.get("subject"))
                 attempted_at = _sanitize_primitive_string(payload.get("attempted_at") or timestamp)
                 
