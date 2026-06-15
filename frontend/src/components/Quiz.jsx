@@ -90,51 +90,33 @@ const Quiz = ({ experimentId, subject }) => {
     setSubmitting(true);
 
     const historyRecord = {
-      user_id: "default-student", 
-      experiment_name: experimentId, 
+      user_id: "default-student",
+      experiment_name: experimentId,
       subject: subject,
       score: correctAnswers,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    // 2. Perform submission to gamification context
-   let result = null;
+    let result = null;
 
-try {
-  result = await submitQuiz(
-    experimentId,
-    correctAnswers,
-    subject,
-    selectedAnswers,
-    questions.length
-  );
-} catch (err) {
-  console.error("Quiz submission failed:", err);
-}
-
-    // 3. Save to local IndexedDB
-    
-    // 4. Queue for background sync if online/offline
     try {
-  await offlineDb.saveExperimentHistory(historyRecord);
+      result = await submitQuiz(
+        experimentId,
+        correctAnswers,
+        subject,
+        selectedAnswers,
+        questions.length
+      );
+    } catch (err) {
+      console.error("Quiz submission failed:", err);
+    }
 
-  await offlineDb.queueAction(
-    "experiment_history",
-    historyRecord
-  );
-} catch (err) {
-  console.warn("Offline save failed:", err);
-}
-    const result = await submitQuiz(
-      experimentId,
-      correctAnswers,
-      subject,
-      selectedAnswers,
-      questions.length
-    );
-
-    await offlineDb.saveExperimentHistory(historyRecord);
-    await offlineDb.queueAction("experiment_history", historyRecord);
+    try {
+      await offlineDb.saveExperimentHistory(historyRecord);
+      await offlineDb.queueAction("experiment_history", historyRecord);
+    } catch (err) {
+      console.warn("Offline save failed:", err);
+    }
 
     if (navigator.onLine) {
       try {
@@ -148,15 +130,7 @@ try {
       }
     }
 
-    const handleSubmitScore = async () => {
-  setSubmitting(true);
-
-  try {
-    // existing code
-  } finally {
     setSubmitting(false);
-  }
-};
     setSubmitted(true);
     if (result) {
       setXpReport(result);
