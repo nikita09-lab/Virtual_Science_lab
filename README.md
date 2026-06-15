@@ -174,6 +174,14 @@ To get started:
 
 ---
 
+### 🔐 Environment Variables
+
+The backend requires a `.env` file. Copy the provided example and fill in your values:
+
+```bash
+cp Backend/.env.example Backend/.env
+
+
 ## 📜 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
