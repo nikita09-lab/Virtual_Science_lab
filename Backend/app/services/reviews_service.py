@@ -1,23 +1,22 @@
 from datetime import datetime, timezone
 from typing import List, Optional, Dict, Any
 from bson import ObjectId
-from pymongo import MongoClient, DESCENDING
+from pymongo import DESCENDING
 
-from app.core.config import MONGODB_URI
+from app.core.db import get_database
 from app.services.reports_service import get_report
 
-_client: MongoClient = None
-_db = None
+_indexes_created = False
 
 def _get_db():
-    global _client, _db
-    if _client is None:
-        _client = MongoClient(MONGODB_URI)
-        _db = _client["virtual_science_lab"]
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
         # Ensure indexes
-        _db["classroom_reports"].create_index([("published_at", DESCENDING)])
-        _db["classroom_reports"].create_index([("subject", 1)])
-    return _db
+        db["classroom_reports"].create_index([("published_at", DESCENDING)])
+        db["classroom_reports"].create_index([("subject", 1)])
+        _indexes_created = True
+    return db
 
 def serialize_doc(doc: dict) -> dict:
     if not doc:

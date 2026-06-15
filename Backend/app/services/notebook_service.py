@@ -1,25 +1,24 @@
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
-from pymongo import MongoClient, ASCENDING
-from app.core.config import MONGODB_URI
+from pymongo import ASCENDING
+from app.core.db import get_database
 
-_client: MongoClient = None
-_db = None
+_indexes_created = False
 
 def _get_db():
-    global _client, _db
-    if _client is None:
-        _client = MongoClient(MONGODB_URI)
-        _db = _client["virtual_science_lab"]
-        _db["experiment_notebooks"].create_index(
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
+        db["experiment_notebooks"].create_index(
             [("user_id", ASCENDING), ("experiment_id", ASCENDING)],
             unique=True,
         )
-        _db["notebook_versions"].create_index(
+        db["notebook_versions"].create_index(
             [("user_id", ASCENDING), ("experiment_id", ASCENDING), ("version", ASCENDING)],
             unique=True,
         )
-    return _db
+        _indexes_created = True
+    return db
 
 def _serialize(doc) -> Dict[str, Any]:
     if not doc:
