@@ -120,9 +120,9 @@ npm run dev
 Open a new terminal and run:
 
 ```bash
-cd Backend
 pip install -r requirements.txt
-bash run.sh
+cd Backend
+uvicorn main:app --reload
 ```
 
 ---
