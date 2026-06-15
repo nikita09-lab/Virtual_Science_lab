@@ -60,6 +60,8 @@ def upsert_notebook_entry(
     results: Optional[str] = None,
     conclusions: Optional[str] = None,
     reflection: Optional[str] = None,
+    content_html: Optional[str] = None,
+    content: Optional[str] = None,
     tags: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     db = _get_db()
@@ -98,6 +100,8 @@ def upsert_notebook_entry(
         "results": str(results) if results is not None else None,
         "conclusions": str(conclusions) if conclusions is not None else None,
         "reflection": str(reflection) if reflection is not None else None,
+        "content_html": str(content_html) if content_html is not None else None,
+        "content": str(content) if content is not None else None,
         "tags": safe_tags,
         "version": version,
         "created_at": created_at,
