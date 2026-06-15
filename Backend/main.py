@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
 from app.api.chatbot import router as chatbot_router
@@ -16,10 +17,7 @@ from app.api.collaboration import router as collaboration_router
 from app.api.leaderboard import router as leaderboard_router
 from app.api.reviews import router as reviews_router
 from app.api.system import router as system_router
-from app.middleware.rate_limit import RateLimitMiddleware, limiter
-from app.core import config
-
-import time
+from app.middleware.rate_limit import RateLimitMiddleware
 
 app = FastAPI(
 
@@ -60,8 +58,6 @@ app.include_router(collaboration_router)
 app.include_router(leaderboard_router)
 app.include_router(system_router)
 
-from fastapi import Request
-from fastapi.responses import JSONResponse
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
