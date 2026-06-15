@@ -7,6 +7,11 @@ load_dotenv()
 APP_NAME = "Virtual Science Lab Backend"
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
+# Rate limiting (requests per minute). In-memory per-process.
+RATE_LIMIT_GENERAL_PER_MINUTE = int(os.getenv("RATE_LIMIT_GENERAL_PER_MINUTE", "100"))
+RATE_LIMIT_AI_ASSISTANT_PER_MINUTE = int(os.getenv("RATE_LIMIT_AI_ASSISTANT_PER_MINUTE", "20"))
+RATE_LIMIT_COLLAB_PER_MINUTE = int(os.getenv("RATE_LIMIT_COLLAB_PER_MINUTE", "60"))
+
 # MongoDB connection string — set this in Vercel dashboard:
 # Settings → Environment Variables → MONGODB_URI
 MONGODB_URI = os.getenv("MONGODB_URI", "")
