@@ -20,15 +20,21 @@ def get_subject_leaderboard(subject: str, limit: int = 50):
     db = _get_db()
     pipeline = [
         {"$match": {"subject": subject}},
+        # Exploit Fix: Group by user and experiment first to isolate the max score per experiment
         {"$group": {
-            "_id": "$user_id",
-            "total_score": {"$sum": "$score"},
-            "experiments_count": {"$addToSet": "$experiment_id"}
+            "_id": { "user_id": "$user_id", "experiment_id": "$experiment_id" },
+            "max_score": {"$max": "$score"}
+        }},
+        # Then group by user to sum their unique highest scores
+        {"$group": {
+            "_id": "$_id.user_id",
+            "total_score": {"$sum": "$max_score"},
+            "experiments_count": {"$sum": 1}
         }},
         {"$project": {
             "user_id": "$_id",
             "score": "$total_score",
-            "experiments_count": {"$size": "$experiments_count"}
+            "experiments_count": "$experiments_count"
         }},
         {"$sort": {"score": -1}},
         {"$limit": limit}
@@ -56,15 +62,21 @@ def get_seasonal_leaderboard(timeframe: str, limit: int = 50):
 
     pipeline = [
         {"$match": {"attempted_at": {"$gte": start_date}}},
+        # Exploit Fix: Group by user and experiment first to isolate the max score per experiment
         {"$group": {
-            "_id": "$user_id",
-            "total_score": {"$sum": "$score"},
-            "experiments_count": {"$addToSet": "$experiment_id"}
+            "_id": { "user_id": "$user_id", "experiment_id": "$experiment_id" },
+            "max_score": {"$max": "$score"}
+        }},
+        # Then group by user to sum their unique highest scores
+        {"$group": {
+            "_id": "$_id.user_id",
+            "total_score": {"$sum": "$max_score"},
+            "experiments_count": {"$sum": 1}
         }},
         {"$project": {
             "user_id": "$_id",
             "score": "$total_score",
-            "experiments_count": {"$size": "$experiments_count"}
+            "experiments_count": "$experiments_count"
         }},
         {"$sort": {"score": -1}},
         {"$limit": limit}
