@@ -15,7 +15,14 @@ from app.api.assistant import router as assistant_router
 from app.api.collaboration import router as collaboration_router
 from app.api.leaderboard import router as leaderboard_router
 from app.api.reviews import router as reviews_router
+from app.api.system import router as system_router
+from app.middleware.rate_limit import RateLimitMiddleware, limiter
+from app.core import config
+
+import time
+
 app = FastAPI(
+
     title="Virtual Science Lab Backend",
     version="1.0.0"
 )
@@ -33,6 +40,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Rate limiting middleware (in-memory per-process)
+app.add_middleware(RateLimitMiddleware)
+
 app.include_router(router)
 app.include_router(chatbot_router)
 app.include_router(gamification_router)
@@ -48,6 +58,7 @@ app.include_router(predictions_router)
 app.include_router(assistant_router)
 app.include_router(collaboration_router)
 app.include_router(leaderboard_router)
+app.include_router(system_router)
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -71,3 +82,4 @@ def root():
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
