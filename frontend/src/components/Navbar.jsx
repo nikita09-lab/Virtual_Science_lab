@@ -281,7 +281,6 @@ const Navbar = () => {
         </Link>
 
 
-
         <button
           onClick={toggleTheme}
           style={{ border: "none", background: "rgba(255,255,255,0.15)", color: "white", cursor: "pointer", fontSize: "18px", padding: "10px 14px", borderRadius: "10px" }}

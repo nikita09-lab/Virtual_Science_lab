@@ -174,6 +174,27 @@ To get started:
 
 ---
 
+### 🔐 Environment Variables
+
+The backend requires a `.env` file. Copy the provided example and fill in your values:
+
+```bash
+cp Backend/.env.example Backend/.env
+
+### 📝 Notes
+
+- The public repository description currently contains a typo:  
+  `"beackend url :- https://funlab-theta.vercel.app/"`  
+  should be `"backend url :- https://funlab-theta.vercel.app/"`.  
+  This will be corrected by maintainers via repo settings.
+
+### 🔧 Environment Variables – Extra Examples
+
+- **Multiple CORS Origins**:  
+  ```env
+  CORS_ORIGINS=http://localhost:5173,https://your-frontend.onrender.com
+
+
 ## 📜 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
