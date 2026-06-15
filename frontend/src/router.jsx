@@ -30,6 +30,7 @@ import FAQ from "./pages/FAQ";
 import Policy from "./pages/Policy";
 import Sandbox from "./pages/Sandbox";
 import ClassroomFeed from "./pages/ClassroomFeed";
+import NotFound from "./pages/NotFound";
 
 const AppRouter = () => {
   return (
@@ -67,6 +68,7 @@ const AppRouter = () => {
         <Route path="/policy" element={<Policy />} />
         <Route path="/sandbox" element={<Sandbox />} />
         <Route path="/classroom-feed" element={<ClassroomFeed />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

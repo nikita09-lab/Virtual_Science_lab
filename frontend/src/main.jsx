@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./router";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { OnlineStatusProvider } from "./context/OnlineStatusContext";
 import { GamificationProvider } from "./context/GamificationContext";
@@ -31,7 +32,11 @@ function Root() {
   useEffect(() => {
     if (sparkleEnabled) enableSparkleCursor();
   }, [sparkleEnabled]);
-  return <AppRouter />;
+  return (
+    <ErrorBoundary>
+      <AppRouter />
+    </ErrorBoundary>
+  );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(

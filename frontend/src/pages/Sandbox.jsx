@@ -427,7 +427,6 @@ const Sandbox = () => {
     if (chemSimulating && chemBaseAdded < 50) {
       ctx.fillStyle = "#3b82f6";
       ctx.beginPath();
-      // eslint-disable-next-line react-hooks/purity
       ctx.arc(buretLeft + 8, 285 + ((Date.now() % 200) / 200) * 25, 3, 0, Math.PI * 2);
       ctx.fill();
     }

@@ -18,22 +18,21 @@ Collection: experiment_notes
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 
-from pymongo import MongoClient, ASCENDING
-from app.core.config import MONGODB_URI
+from pymongo import ASCENDING
+from app.core.db import get_database
 
-_client: MongoClient = None
-_db = None
+_indexes_created = False
 
 def _get_db():
-    global _client, _db
-    if _client is None:
-        _client = MongoClient(MONGODB_URI)
-        _db = _client["virtual_science_lab"]
-        _db["experiment_notes"].create_index(
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
+        db["experiment_notes"].create_index(
             [("user_id", ASCENDING), ("experiment_id", ASCENDING)],
             unique=True,
         )
-    return _db
+        _indexes_created = True
+    return db
 
 def init_db():
     _get_db()

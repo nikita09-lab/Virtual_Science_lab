@@ -18,26 +18,25 @@ Collection used:
 from datetime import datetime, timezone
 from typing import Optional
 
-from pymongo import MongoClient, ASCENDING
-from app.core.config import MONGODB_URI
+from pymongo import ASCENDING
+from app.core.db import get_database
 
 # ---------------------------------------------------------------------------
 # Connection singleton
 # ---------------------------------------------------------------------------
-_client: MongoClient = None
-_db = None
+_indexes_created = False
 
 def _get_db():
-    global _client, _db
-    if _client is None:
-        _client = MongoClient(MONGODB_URI)
-        _db = _client["virtual_science_lab"]
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
         # Compound unique index mirrors the SQLite PRIMARY KEY (user_id, experiment_id)
-        _db["experiment_progress"].create_index(
+        db["experiment_progress"].create_index(
             [("user_id", ASCENDING), ("experiment_id", ASCENDING)],
             unique=True,
         )
-    return _db
+        _indexes_created = True
+    return db
 
 # ---------------------------------------------------------------------------
 # init_db — no-op in MongoDB (index created lazily on first connection)
