@@ -81,9 +81,13 @@ class ConnectionManager:
 
     async def remove_participant(self, session_code: str, student_name: str):
         self.disconnect(session_code, student_name)
-        if session_code in active_sessions and active_sessions[session_code]["participants"]:
-            await self.broadcast_presence(session_code)
-            await self.broadcast_chat(session_code, "System", f"{student_name} left the lab.")
+        if session_code in active_sessions:
+            if not active_sessions[session_code]["participants"]:
+                # Memory Leak Fix: Destroy the session completely if no participants remain
+                del active_sessions[session_code]
+            else:
+                await self.broadcast_presence(session_code)
+                await self.broadcast_chat(session_code, "System", f"{student_name} left the lab.")
 
     async def broadcast_presence(self, session_code: str):
         if session_code in active_sessions:

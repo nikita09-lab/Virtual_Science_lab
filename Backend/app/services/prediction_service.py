@@ -102,20 +102,25 @@ EXPERIMENT_CATALOG = [
   }
 ]
 
-def generate_prediction(user_id: str, experiment_id: str) -> Dict[str, Any]:
+def generate_prediction(
+    user_id: str, 
+    experiment_id: str, 
+    pre_fetched_progress: list = None, 
+    pre_fetched_quizzes: list = None
+) -> Dict[str, Any]:
     exp = next((e for e in EXPERIMENT_CATALOG if e["id"] == experiment_id), None)
     if not exp:
         raise ValueError("Experiment not found")
 
-    # Fetch user data
+    # Fetch user data (use pre-fetched if available to prevent N+1 DB query storms)
     try:
-        progress_records = progress_service.get_user_experiment_progress(user_id)
+        progress_records = pre_fetched_progress if pre_fetched_progress is not None else progress_service.get_user_experiment_progress(user_id)
         completed_ids = {r["experiment_id"] for r in progress_records if r.get("completed")}
     except Exception:
         completed_ids = set()
 
     try:
-        quiz_attempts = gamification_service.get_quiz_attempts(user_id)
+        quiz_attempts = pre_fetched_quizzes if pre_fetched_quizzes is not None else gamification_service.get_quiz_attempts(user_id)
     except Exception:
         quiz_attempts = []
 
@@ -127,8 +132,8 @@ def generate_prediction(user_id: str, experiment_id: str) -> Dict[str, Any]:
     mastery_score = subject_mastery_ratio * 35
 
     # 2. Quiz Performance (25%)
-    # Average score in the same subject
-    subject_quiz_scores = [a["percentage"] for a in quiz_attempts if any(e["id"] == a["experiment_id"] and e["subject"] == exp["subject"] for e in EXPERIMENT_CATALOG)]
+    # Average score in the same subject (optimized to avoid O(N*M) nested loop)
+    subject_quiz_scores = [a["percentage"] for a in quiz_attempts if a.get("subject") == exp["subject"]]
     avg_quiz = sum(subject_quiz_scores) / len(subject_quiz_scores) if subject_quiz_scores else 50 # Default to 50% if no quizzes
     quiz_score = (avg_quiz / 100) * 25
 
@@ -220,4 +225,18 @@ def generate_prediction(user_id: str, experiment_id: str) -> Dict[str, Any]:
     }
 
 def get_all_predictions(user_id: str) -> List[Dict[str, Any]]:
-    return [generate_prediction(user_id, exp["id"]) for exp in EXPERIMENT_CATALOG]
+    # Bulk fetch database records once to eliminate the N+1 query problem
+    try:
+        progress_records = progress_service.get_user_experiment_progress(user_id)
+    except Exception:
+        progress_records = []
+        
+    try:
+        quiz_attempts = gamification_service.get_quiz_attempts(user_id)
+    except Exception:
+        quiz_attempts = []
+        
+    return [
+        generate_prediction(user_id, exp["id"], progress_records, quiz_attempts) 
+        for exp in EXPERIMENT_CATALOG
+    ]

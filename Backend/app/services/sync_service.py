@@ -52,8 +52,8 @@ def process_single_sync_action(idempotency_key: str, action_type: str, version: 
         # NoSQL Injection Scanner Check
         _deep_nosql_operator_block(payload)
 
-        # 📌 1. Process Notes Mutations
-        if safe_action_type == "notes":
+        # 📌 1. Process Notes/Notebook Mutations
+        if safe_action_type in ["notes", "notebook"]:
             user_id = _sanitize_primitive_string(payload.get("user_id"))
             experiment_id = _sanitize_primitive_string(payload.get("experiment_id"))
             client_updated_at = _sanitize_primitive_string(payload.get("updated_at"))
@@ -137,6 +137,16 @@ def process_single_sync_action(idempotency_key: str, action_type: str, version: 
                 "status": "success", 
                 "action_applied": "quiz", 
                 "document_id": f"{user_id}_{experiment_id}", 
+                "applied_version": version + 1
+            }
+
+        # 📌 4. Process Experiment History Mutations (Graceful stub)
+        elif safe_action_type == "experiment_history":
+            user_id = _sanitize_primitive_string(payload.get("user_id"))
+            return {
+                "status": "success", 
+                "action_applied": "experiment_history", 
+                "document_id": f"history_{user_id}", 
                 "applied_version": version + 1
             }
 

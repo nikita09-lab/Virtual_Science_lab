@@ -53,6 +53,8 @@ def upsert_notebook_entry(payload: NotebookEntryUpsertRequest):
             results=payload.results,
             conclusions=payload.conclusions,
             reflection=payload.reflection,
+            content_html=payload.content_html,
+            content=payload.content,
             tags=payload.tags,
         )
     except Exception as exc:

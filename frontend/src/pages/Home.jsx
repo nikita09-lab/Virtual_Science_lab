@@ -6,6 +6,7 @@ import { EXPERIMENT_CATALOG } from "../data/experiments";
 import Quiz from "../components/Quiz";
 import Footer from "../components/Footer";
 import { useOnlineStatus } from "../context/OnlineStatusContext";
+import API_URL from "../config";
 
 const Home = () => {
   const [backendStatus, setBackendStatus] = useState("");
@@ -25,7 +26,7 @@ const Home = () => {
       return;
     }
 
-    fetch("http://127.0.0.1:8000/")
+    fetch(`${API_URL}/`)
       .then((res) => res.json())
       .then((data) => setBackendStatus(data.status))
       .catch(() => setBackendStatus("Backend not connected ❌"));

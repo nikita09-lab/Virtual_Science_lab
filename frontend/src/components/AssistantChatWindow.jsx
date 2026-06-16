@@ -119,9 +119,9 @@ export default function AssistantChatWindow({
     }
   };
 
-  const handleVoiceInput = (transcript) => {
+  const handleVoiceInput = React.useCallback((transcript) => {
     setInputValue(transcript);
-  };
+  }, [setInputValue]);
 
   return (
     <div

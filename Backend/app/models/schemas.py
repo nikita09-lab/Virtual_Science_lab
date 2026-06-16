@@ -40,6 +40,26 @@ def secure_string_processor(v: Any) -> Any:
 # Reusable security type alias for all input schema structures
 SanitizedStr = Annotated[str, BeforeValidator(secure_string_processor)]
 
+def secure_richtext_processor(v: Any) -> Any:
+    """
+    Sanitization agent that allows safe rich-text HTML (e.g. bold, lists) 
+    but strictly strips dangerous scripts or malicious attributes.
+    """
+    if isinstance(v, dict) or isinstance(v, list):
+        global_nosql_guard(v)
+        
+    if isinstance(v, str):
+        allowed_tags = ["p", "br", "strong", "em", "u", "s", "ul", "ol", "li", "a", "img", "h1", "h2", "h3"]
+        allowed_attrs = {
+            "a": ["href", "title", "target"],
+            "img": ["src", "alt", "width", "height"]
+        }
+        return bleach.clean(v, tags=allowed_tags, attributes=allowed_attrs, strip=True)
+        
+    return v
+
+RichTextStr = Annotated[str, BeforeValidator(secure_richtext_processor)]
+
 # -------------------------------------------------------------------------
 # 📋 HARDENED PYDANTIC SCHEMAS
 # -------------------------------------------------------------------------
@@ -124,6 +144,8 @@ class NotebookEntryUpsertRequest(BaseModel):
     results: Optional[SanitizedStr] = None
     conclusions: Optional[SanitizedStr] = None
     reflection: Optional[SanitizedStr] = None
+    content_html: Optional[RichTextStr] = None
+    content: Optional[SanitizedStr] = None
     tags: Optional[List[SanitizedStr]] = None
 
 
@@ -138,6 +160,8 @@ class NotebookEntryResponse(BaseModel):
     results: Optional[str] = None
     conclusions: Optional[str] = None
     reflection: Optional[str] = None
+    content_html: Optional[str] = None
+    content: Optional[str] = None
     tags: List[str] = []
     version: int
     created_at: str
@@ -153,6 +177,8 @@ class NotebookVersionResponse(BaseModel):
     results: Optional[str] = None
     conclusions: Optional[str] = None
     reflection: Optional[str] = None
+    content_html: Optional[str] = None
+    content: Optional[str] = None
     tags: List[str] = []
 
 
