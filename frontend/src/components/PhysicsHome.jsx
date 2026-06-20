@@ -9,7 +9,7 @@ const PhysicsHome = () => {
   const physicsExperiments = EXPERIMENT_CATALOG.filter(
     (experiment) =>
       experiment.subject === "physics" &&
-      experiment.name.toLowerCase().includes(searchQuery.toLowerCase())
+      experiment.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
