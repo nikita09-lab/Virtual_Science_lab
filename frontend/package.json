@@ -16,7 +16,7 @@
     "css": "^3.0.0",
     "date-fns": "^4.3.0",
     "framer-motion": "^12.26.2",
-    "lucide-react": "^1.16.0",
+    "lucide-react": "^0.469.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-force-graph-2d": "^1.29.1",
@@ -43,9 +43,9 @@
     "lint-staged": "^16.4.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
-    "vite": "^7.2.4",
-    "lint-staged": {
+    "vite": "^7.2.4"
+  },
+  "lint-staged": {
     "*.{js,jsx}": "eslint --fix"
-    }
   }
 }
