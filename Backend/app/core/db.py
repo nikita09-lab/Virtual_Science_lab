@@ -1,11 +1,16 @@
+import sys
 from pymongo import MongoClient
 from app.core.config import MONGODB_URI
-
-# Centralized MongoDB connection
-# Instantiating the client here ensures a single connection pool is shared 
-# across all FastAPI worker threads and service modules.
-client = MongoClient(MONGODB_URI)
-db = client["virtual_science_lab"]
-
+_client = None
+_db = None
 def get_database():
-    return db
+    global _client, _db
+    if _db is not None:
+        return _db
+    try:
+        _client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
+        _db = _client["virtual_science_lab"]
+        return _db
+    except Exception as exc:
+        print(f"ERROR: Failed to connect to MongoDB: {exc}", file=sys.stderr)
+        raise
