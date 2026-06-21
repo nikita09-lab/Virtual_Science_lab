@@ -1,11 +1,25 @@
-import os
-import sqlite3
 from datetime import datetime, timezone
 from typing import Optional
 
+from app.core.db import get_database
 from app.services import gamification_service, notes_service, progress_service
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "gamification.db")
+_indexes_created = False
+
+
+def _get_db():
+    global _indexes_created
+    db = get_database()
+    if not _indexes_created:
+        db["lab_reports"].create_index("user_id")
+        db["lab_reports"].create_index("id", unique=True)
+        _indexes_created = True
+    return db
+
+
+def init_db():
+    _get_db()
+
 
 EXPERIMENT_DETAILS = {
     "human-body": {
@@ -83,56 +97,23 @@ EXPERIMENT_DETAILS = {
 }
 
 
-def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def init_db():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS lab_reports (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT NOT NULL,
-            experiment_id TEXT NOT NULL,
-            title TEXT NOT NULL,
-            subject TEXT NOT NULL,
-            objective TEXT NOT NULL,
-            procedure TEXT NOT NULL,
-            observations TEXT NOT NULL,
-            results TEXT NOT NULL,
-            conclusions TEXT NOT NULL,
-            quiz_performance TEXT NOT NULL,
-            status TEXT NOT NULL DEFAULT 'draft',
-            generated_at TEXT NOT NULL,
-            updated_at TEXT NOT NULL
-        )
-        """
+def _next_report_id() -> int:
+    """Mongo-native auto-increment, mirroring SQLite's AUTOINCREMENT id."""
+    db = _get_db()
+    doc = db["counters"].find_one_and_update(
+        {"_id": "lab_reports"},
+        {"$inc": {"value": 1}},
+        upsert=True,
+        return_document=True,
     )
-    conn.commit()
-    conn.close()
+    return doc["value"]
 
 
-def row_to_report(row):
-    return {
-        "id": row["id"],
-        "user_id": row["user_id"],
-        "experiment_id": row["experiment_id"],
-        "title": row["title"],
-        "subject": row["subject"],
-        "objective": row["objective"],
-        "procedure": row["procedure"],
-        "observations": row["observations"],
-        "results": row["results"],
-        "conclusions": row["conclusions"],
-        "quiz_performance": row["quiz_performance"],
-        "status": row["status"],
-        "generated_at": row["generated_at"],
-        "updated_at": row["updated_at"],
-    }
+def _serialize(doc) -> dict:
+    if doc is None:
+        return None
+    doc.pop("_id", None)
+    return doc
 
 
 def get_experiment_detail(experiment_id: str):
@@ -173,14 +154,20 @@ def build_results(user_id: str, experiment_id: str, notes):
 
 
 def create_report(user_id: str, experiment_id: str):
-    init_db()
+    db = _get_db()
     detail = get_experiment_detail(experiment_id)
     notes = notes_service.get_user_experiment_notes(user_id, experiment_id) or {}
     now = datetime.now(timezone.utc).isoformat()
 
+    report_id = _next_report_id()
+
+    safe_user_id = str(user_id)
+    safe_experiment_id = str(experiment_id)
+
     payload = {
-        "user_id": user_id,
-        "experiment_id": experiment_id,
+        "id": report_id,
+        "user_id": safe_user_id,
+        "experiment_id": safe_experiment_id,
         "title": detail["title"],
         "subject": detail["subject"],
         "objective": detail["objective"],
@@ -194,75 +181,26 @@ def create_report(user_id: str, experiment_id: str):
         "updated_at": now,
     }
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        INSERT INTO lab_reports (
-            user_id, experiment_id, title, subject, objective, procedure,
-            observations, results, conclusions, quiz_performance, status,
-            generated_at, updated_at
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            payload["user_id"],
-            payload["experiment_id"],
-            payload["title"],
-            payload["subject"],
-            payload["objective"],
-            payload["procedure"],
-            payload["observations"],
-            payload["results"],
-            payload["conclusions"],
-            payload["quiz_performance"],
-            payload["status"],
-            payload["generated_at"],
-            payload["updated_at"],
-        ),
-    )
-    report_id = cursor.lastrowid
-    conn.commit()
-    conn.close()
-
-    return get_report(user_id, report_id)
+    db["lab_reports"].insert_one(payload)
+    return get_report(safe_user_id, report_id)
 
 
 def get_reports(user_id: str):
-    init_db()
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        SELECT * FROM lab_reports
-        WHERE user_id = ?
-        ORDER BY updated_at DESC
-        """,
-        (user_id,),
-    )
-    rows = cursor.fetchall()
-    conn.close()
-    return [row_to_report(row) for row in rows]
+    db = _get_db()
+    safe_user_id = str(user_id)
+    docs = db["lab_reports"].find({"user_id": safe_user_id}).sort("updated_at", -1)
+    return [_serialize(doc) for doc in docs]
 
 
 def get_report(user_id: str, report_id: int):
-    init_db()
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        SELECT * FROM lab_reports
-        WHERE user_id = ? AND id = ?
-        """,
-        (user_id, report_id),
-    )
-    row = cursor.fetchone()
-    conn.close()
-    return row_to_report(row) if row else None
+    db = _get_db()
+    safe_user_id = str(user_id)
+    doc = db["lab_reports"].find_one({"user_id": safe_user_id, "id": report_id})
+    return _serialize(doc)
 
 
 def update_report(report_id: int, payload: dict):
-    init_db()
+    db = _get_db()
     allowed_fields = [
         "title",
         "objective",
@@ -276,20 +214,12 @@ def update_report(report_id: int, payload: dict):
     updates = {key: value for key, value in payload.items() if key in allowed_fields and value is not None}
     updates["updated_at"] = datetime.now(timezone.utc).isoformat()
 
-    set_clause = ", ".join(f"{key} = ?" for key in updates)
-    values = list(updates.values()) + [report_id]
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"UPDATE lab_reports SET {set_clause} WHERE id = ?", values)
-    conn.commit()
-    cursor.execute("SELECT user_id FROM lab_reports WHERE id = ?", (report_id,))
-    row = cursor.fetchone()
-    conn.close()
-
-    if not row:
+    existing = db["lab_reports"].find_one({"id": report_id})
+    if not existing:
         return None
-    return get_report(row["user_id"], report_id)
+
+    db["lab_reports"].update_one({"id": report_id}, {"$set": updates})
+    return get_report(existing["user_id"], report_id)
 
 
 def to_markdown(report):

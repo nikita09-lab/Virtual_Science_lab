@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback } from "react";
+import API_URL from "../config";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const ReviewsContext = createContext();
 
 export function useReviews() {
