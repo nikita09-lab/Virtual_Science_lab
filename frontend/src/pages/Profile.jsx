@@ -15,7 +15,7 @@ const BADGES_CONFIG = [
   {
     id: "Biology Pro",
     title: "Biology Pro",
-    description: "Complete all 4 Biology quizzes with a perfect score (5/5).",
+    descripticcon: "Complete all 4 Biology quizzes with a perfect score (5/5).",
     emoji: "🧬",
     subject: "Biology",
     color: "from-emerald-500 to-teal-700 shadow-teal-500/20 text-teal-100"
@@ -63,7 +63,7 @@ const BADGES_CONFIG = [
   {
     id: "Explorer",
     title: "Explorer",
-    description: "Complete a Weekly 'Monday' Challenge with a score of 4/5 or better!",
+    description: "Complete a Weekly 'Monday' Challenge with a score of 5/5 or better!",
     emoji: "💡",
     subject: "Challenge",
     color: "from-cyan-400 to-blue-500 shadow-cyan-500/20 text-cyan-100 font-extrabold"
@@ -89,7 +89,7 @@ const getRank = (xp) => {
   if (xp < 150) return { level: 1, title: "Apprentice Researcher", nextXp: 150, prevXp: 0 };
   if (xp < 450) return { level: 2, title: "Junior Lab Assistant", nextXp: 450, prevXp: 150 };
   if (xp < 950) return { level: 3, title: "Senior Experimenter", nextXp: 950, prevXp: 450 };
-  if (xp < 1800) return { level: 4, title: "Master Innovator", nextXp: 1800, prevXp: 950 };
+  if (xp < 1800) return { level:4, title: "Master Innovator", nextXp: 1800, prevXp: 950 };
   return { level: 5, title: "Grand Science Fellow", nextXp: null, prevXp: 1800 };
 };
 
@@ -533,7 +533,7 @@ const Profile = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                   <div>
                     <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
-                      📊 Personal Performance Dashboard
+                      Personal Performance Dashboard
                     </h3>
                     <p className="text-slate-400 text-xs font-medium mt-1">
                       Multi-dimensional evaluation of your conceptual strength.
@@ -635,7 +635,7 @@ const Profile = () => {
               {/* Dynamic Suggested Focus Section */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400 mb-2 flex items-center gap-2">
-                  🎯 Suggested Focus Areas
+                   Suggested Focus Areas
                 </h3>
                 <p className="text-slate-400 text-xs font-medium mb-6">
                   Recommended science exercises to target your lower quiz averages.
