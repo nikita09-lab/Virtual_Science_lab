@@ -7,5 +7,10 @@ def authenticate_user(email: str, password: str):
         return None
     return user
 
+def register_user(name: str, email: str, password: str):
+    """Register a new user."""
+    user = User.create_user(name, email, password)
+    return user
+
 def create_access_token(data: dict, expires_delta):
     return create_jwt_token(data, expires_delta)

@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
+from app.api.auth import router as auth_router
 from app.api.chatbot import router as chatbot_router
 from app.api.gamification import router as gamification_router
 from app.api.progress import router as progress_router
@@ -41,6 +42,7 @@ app.add_middleware(
 # Rate limiting middleware (in-memory per-process)
 app.add_middleware(RateLimitMiddleware)
 
+app.include_router(auth_router)
 app.include_router(router)
 app.include_router(chatbot_router)
 app.include_router(gamification_router)

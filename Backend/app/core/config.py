@@ -7,6 +7,9 @@ load_dotenv()
 APP_NAME = "Virtual Science Lab Backend"
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
+# JWT Secret Key for token generation
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-this-in-production")
+
 # Rate limiting (requests per minute). In-memory per-process.
 RATE_LIMIT_GENERAL_PER_MINUTE = int(os.getenv("RATE_LIMIT_GENERAL_PER_MINUTE", "100"))
 RATE_LIMIT_AI_ASSISTANT_PER_MINUTE = int(os.getenv("RATE_LIMIT_AI_ASSISTANT_PER_MINUTE", "20"))

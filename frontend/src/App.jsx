@@ -17,6 +17,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Policy = lazy(() => import("./pages/Policy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Feedback = lazy(() => import("./pages/Feedback"));
+const Auth = lazy(() => import("./pages/Auth"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
             <Routes>
               {/* Home */}
               <Route path="/" element={<Home />} />
+
+              {/* Auth */}
+              <Route path="/auth" element={<Auth />} />
 
               {/* Subject Pages */}
               <Route path="/biology/*" element={<Biology />} />
