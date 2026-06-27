@@ -281,6 +281,48 @@ const Navbar = () => {
         </Link>
 
 
+        <Link
+          style={{
+            ...linkStyle,
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            padding: "8px 16px",
+          }}
+          to="/auth"
+          onMouseOver={(e) =>
+            (e.currentTarget.style.background = "rgba(255,255,255,0.25)")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.background = "rgba(255,255,255,0.15)")
+          }
+        >
+          Sign In
+        </Link>
+
+        <Link
+          style={{
+            ...linkStyle,
+            background: "rgba(255,255,255,0.9)",
+            color: "#7c3aed",
+            fontWeight: "700",
+            padding: "8px 18px",
+            transition: "all 0.3s ease",
+          }}
+          to="/auth"
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = "rgba(255,255,255,1)";
+            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.boxShadow = "0 4px 12px rgba(255,255,255,0.3)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.9)";
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
+        >
+          Sign Up
+        </Link>
+
         <button
           onClick={toggleTheme}
           style={{ border: "none", background: "rgba(255,255,255,0.15)", color: "white", cursor: "pointer", fontSize: "18px", padding: "10px 14px", borderRadius: "10px" }}
