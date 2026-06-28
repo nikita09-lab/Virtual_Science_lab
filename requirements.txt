@@ -102,4 +102,4 @@ webencodings==0.5.1
 websocket-client==1.9.0
 passlib==1.7.4
 bcrypt==4.1.2
-PyJWT==2.8.1
+PyJWT==2.13.0
