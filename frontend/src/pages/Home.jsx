@@ -106,6 +106,14 @@ const Home = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
               {!isOnline ? "Offline Mode 🟡" : (backendStatus || "Connecting...")}
             </span>
+            <div className="flex gap-2">
+              <Link to="/auth?tab=signin" className="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold text-sm hover:shadow-md transition-all duration-200 border border-indigo-200 dark:border-indigo-800/40">
+                Sign In
+              </Link>
+              <Link to="/auth?tab=signup" className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-indigo-500/50 transition-all duration-200">
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
 

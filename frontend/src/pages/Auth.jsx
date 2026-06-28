@@ -1,13 +1,22 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import API_URL from "../config";
 
 export default function Auth() {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("signin");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+
+  // Set active tab from URL params on mount
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam && ["signin", "signup", "skip"].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
 
   // Sign In State
   const [signInData, setSignInData] = useState({
